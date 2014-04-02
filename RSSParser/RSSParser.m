@@ -13,8 +13,10 @@
 
 @implementation RSSParser
 
+#pragma mark -
 #pragma mark lifecycle
-- (id)init {
+
+- (instancetype)init {
     self = [super init];
     if (self) {
         items = [[NSMutableArray alloc] init];
@@ -23,41 +25,45 @@
 }
 
 #pragma mark -
-
 #pragma mark parser
 
-+ (void)parseRSSFeedForRequest:(NSURLRequest *)urlRequest
-                       success:(void (^)(NSArray *feedItems))success
-                       failure:(void (^)(NSError *error))failure
++ (RSSParser *)parseRSSFeedForRequest:(NSURLRequest *)urlRequest
+                              success:(void (^)(NSArray *feedItems))success
+                              failure:(void (^)(NSError *error))failure
 {
     RSSParser *parser = [[RSSParser alloc] init];
     [parser parseRSSFeedForRequest:urlRequest success:success failure:failure];
+    return parser;
 }
 
 
 - (void)parseRSSFeedForRequest:(NSURLRequest *)urlRequest
-                                          success:(void (^)(NSArray *feedItems))success
-                                          failure:(void (^)(NSError *error))failure
+                                           success:(void (^)(NSArray *feedItems))success
+                                           failure:(void (^)(NSError *error))failure
 {
-    
     block = [success copy];
+    failblock = [failure copy];
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:urlRequest];
-    
     operation.responseSerializer = [[AFXMLParserResponseSerializer alloc] init];
     operation.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/xml", @"text/xml",@"application/rss+xml", @"application/atom+xml", nil];
     
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        failblock = [failure copy];
         [(NSXMLParser *)responseObject setDelegate:self];
         [(NSXMLParser *)responseObject parse];
+        self.xmlParser = (NSXMLParser *)responseObject;
     }
                                      failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                          failure(error);
                                      }];
-    
+    self.operation = operation;
     [operation start];
-    
+}
+
+- (void)cancel
+{
+    [self.operation cancel];
+    [self.xmlParser abortParsing];
 }
 
 #pragma mark -
