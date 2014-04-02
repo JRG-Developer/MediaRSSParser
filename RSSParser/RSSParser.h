@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "RSSItem.h"
 
+@class AFHTTPRequestOperation;
+
 @interface RSSParser : NSObject <NSXMLParserDelegate> {
     RSSItem *currentItem;
     NSMutableArray *items;
@@ -17,15 +19,17 @@
     void (^failblock)(NSError *error);
 }
 
+@property (nonatomic, strong) AFHTTPRequestOperation *operation;
+@property (nonatomic, strong) NSXMLParser *xmlParser;
 
-
-+ (void)parseRSSFeedForRequest:(NSURLRequest *)urlRequest
-                       success:(void (^)(NSArray *feedItems))success
-                       failure:(void (^)(NSError *error))failure;
++ (RSSParser *)parseRSSFeedForRequest:(NSURLRequest *)urlRequest
+                              success:(void (^)(NSArray *feedItems))success
+                              failure:(void (^)(NSError *error))failure;
 
 - (void)parseRSSFeedForRequest:(NSURLRequest *)urlRequest
                        success:(void (^)(NSArray *feedItems))success
                        failure:(void (^)(NSError *error))failure;
 
+- (void)cancel;
 
 @end
