@@ -29,6 +29,8 @@
 		118543F414E9AFE0001761CB /* ArticleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118543F214E9AFE0001761CB /* ArticleDetailViewController.m */; };
 		118543F514E9AFE0001761CB /* ArticleDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 118543F314E9AFE0001761CB /* ArticleDetailViewController.xib */; };
 		38D21F55D00F4BA7A4D6010A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2491A17B4E26435E940E1404 /* libPods.a */; };
+		44FDE3C718EC18C4006499D2 /* RSSMediaCredit.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FDE3C418EC18C4006499D2 /* RSSMediaCredit.m */; };
+		44FDE3C818EC18C4006499D2 /* RSSMediaThumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FDE3C618EC18C4006499D2 /* RSSMediaThumbnail.m */; };
 		C6E456351B014048A1E4434B /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A5D50FCF4044DC3865DCB53 /* libPods-Tests.a */; };
 		DA0619AD16A3127300DB4BB8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA0619AC16A3127300DB4BB8 /* SystemConfiguration.framework */; };
 		DA0619AF16A312E200DB4BB8 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA0619AE16A312E200DB4BB8 /* MobileCoreServices.framework */; };
@@ -80,6 +82,10 @@
 		118543F214E9AFE0001761CB /* ArticleDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArticleDetailViewController.m; sourceTree = "<group>"; };
 		118543F314E9AFE0001761CB /* ArticleDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArticleDetailViewController.xib; sourceTree = "<group>"; };
 		2491A17B4E26435E940E1404 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		44FDE3C318EC18C4006499D2 /* RSSMediaCredit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSMediaCredit.h; sourceTree = "<group>"; };
+		44FDE3C418EC18C4006499D2 /* RSSMediaCredit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSMediaCredit.m; sourceTree = "<group>"; };
+		44FDE3C518EC18C4006499D2 /* RSSMediaThumbnail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSMediaThumbnail.h; sourceTree = "<group>"; };
+		44FDE3C618EC18C4006499D2 /* RSSMediaThumbnail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSMediaThumbnail.m; sourceTree = "<group>"; };
 		4A5D50FCF4044DC3865DCB53 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB8EEF26B88147498AFADEE2 /* Pods-Tests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.xcconfig"; path = "Pods/Pods-Tests.xcconfig"; sourceTree = "<group>"; };
 		DA0619AC16A3127300DB4BB8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -219,6 +225,10 @@
 				118543C314E9AC20001761CB /* RSSItem.m */,
 				118543C414E9AC20001761CB /* RSSParser.h */,
 				118543C514E9AC20001761CB /* RSSParser.m */,
+				44FDE3C318EC18C4006499D2 /* RSSMediaCredit.h */,
+				44FDE3C418EC18C4006499D2 /* RSSMediaCredit.m */,
+				44FDE3C518EC18C4006499D2 /* RSSMediaThumbnail.h */,
+				44FDE3C618EC18C4006499D2 /* RSSMediaThumbnail.m */,
 			);
 			name = RSSParser;
 			path = ../RSSParser;
@@ -392,7 +402,9 @@
 			files = (
 				110A8A9414E9A30C0013AC07 /* main.m in Sources */,
 				110A8A9814E9A30C0013AC07 /* AppDelegate.m in Sources */,
+				44FDE3C818EC18C4006499D2 /* RSSMediaThumbnail.m in Sources */,
 				118543C614E9AC20001761CB /* RSSItem.m in Sources */,
+				44FDE3C718EC18C4006499D2 /* RSSMediaCredit.m in Sources */,
 				118543C714E9AC20001761CB /* RSSParser.m in Sources */,
 				118543EF14E9ACD2001761CB /* ArticlesListeTableViewController.m in Sources */,
 				118543F414E9AFE0001761CB /* ArticleDetailViewController.m in Sources */,

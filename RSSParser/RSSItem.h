@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface RSSItem : NSObject <NSCoding>
-
 @property (strong,nonatomic) NSString *title;
 @property (strong,nonatomic) NSString *itemDescription;
 @property (strong,nonatomic) NSString *content;
@@ -21,7 +20,12 @@
 @property (strong,nonatomic) NSString *author;
 @property (strong,nonatomic) NSString *guid;
 
--(NSArray *)imagesFromItemDescription;
--(NSArray *)imagesFromContent;
+@property (strong,nonatomic) NSString *mediaTitle;
+@property (strong,nonatomic) NSString *mediaDescription;
+@property (strong,nonatomic) NSArray *mediaCredits;
+@property (strong,nonatomic) NSArray *mediaThumbnails;
+
+- (NSArray *)imagesFromItemDescription;
+- (NSArray *)imagesFromContent;
 
 @end

@@ -7,29 +7,33 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RSSItem.h"
 
-@class AFHTTPRequestOperation;
+@class AFHTTPSessionManager;
 
-@interface RSSParser : NSObject <NSXMLParserDelegate> {
-    RSSItem *currentItem;
-    NSMutableArray *items;
-    NSMutableString *tmpString;
-    void (^block)(NSArray *feedItems);
-    void (^failblock)(NSError *error);
-}
-
-@property (nonatomic, strong) AFHTTPRequestOperation *operation;
+@interface RSSParser : NSObject <NSXMLParserDelegate>
+@property (nonatomic, strong) AFHTTPSessionManager *client;
 @property (nonatomic, strong) NSXMLParser *xmlParser;
 
-+ (RSSParser *)parseRSSFeedForRequest:(NSURLRequest *)urlRequest
-                              success:(void (^)(NSArray *feedItems))success
-                              failure:(void (^)(NSError *error))failure;
++ (void)parseRSSFeedForRequest:(NSURLRequest *)urlRequest
+                       success:(void (^)(NSArray *feedItems))success
+                       failure:(void (^)(NSError *error))failure;
+
+- (void)parseRSSFeedForURLString:(NSString *)urlString
+                         success:(void (^)(NSArray *feedItems))success
+                         failure:(void (^)(NSError *error))failure;
+
+- (void)parseRSSFeedForURL:(NSURL *)url
+                   success:(void (^)(NSArray *feedItems))success
+                   failure:(void (^)(NSError *error))failure;
 
 - (void)parseRSSFeedForRequest:(NSURLRequest *)urlRequest
                        success:(void (^)(NSArray *feedItems))success
                        failure:(void (^)(NSError *error))failure;
 
+- (void)parseRSSFeedForURLString:(NSString *)urlString
+                      parameters:(NSDictionary *)paremeters
+                         success:(void (^)(NSArray *feedItems))success
+                         failure:(void (^)(NSError *error))failure;
 - (void)cancel;
 
 @end

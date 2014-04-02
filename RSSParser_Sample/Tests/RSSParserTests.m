@@ -8,6 +8,7 @@
 
 #import "Kiwi.h"
 #import "RSSParser.h"
+#import "RSSItem.h"
 
 SPEC_BEGIN(RSSParserTests)
 
@@ -25,7 +26,7 @@ describe(@"RSSParser", ^{
 
     });
     
-//Atom tests
+// Atom tests
     it(@"parser with atom feed should return one item or more", ^{
         
         NSURL *atomMockURL = [NSURL fileURLWithPath:atomMock];
@@ -73,7 +74,9 @@ describe(@"RSSParser", ^{
         [RSSParser parseRSSFeedForRequest:request
                                   success:^(NSArray *feedItems) {
                                       items = [NSArray arrayWithArray:feedItems];
-                                      testItemContent = [[feedItems firstObject] content];
+                                      
+                                      RSSItem *item = [feedItems firstObject];
+                                      testItemContent = item.content;
                                   }
                                   failure:^(NSError *error) {
                                   }];
@@ -82,7 +85,7 @@ describe(@"RSSParser", ^{
         
     });
     
-    it(@"last item in atom feed talk about rimeMachine", ^{
+    it(@"last item in atom feed talk about timeMachine", ^{
         
         NSURL *atomMockURL = [NSURL fileURLWithPath:atomMock];
         
@@ -92,7 +95,8 @@ describe(@"RSSParser", ^{
         [RSSParser parseRSSFeedForRequest:[NSURLRequest requestWithURL:atomMockURL]
                                   success:^(NSArray *feedItems) {
                                       items = [NSArray arrayWithArray:feedItems];
-                                      testItemContent = [[feedItems lastObject] content];
+                                      RSSItem *item = [feedItems firstObject];
+                                      testItemContent = item.content;
                                   }
                                   failure:^(NSError *error) {
                                       
@@ -143,13 +147,12 @@ describe(@"RSSParser", ^{
     
         NSURL *rssWordpressMockURL = [NSURL fileURLWithPath:rssWordpressMock];
         
-        __block NSArray *items = nil;
         __block NSString *testItemContent = nil;
         
         [RSSParser parseRSSFeedForRequest:[NSURLRequest requestWithURL:rssWordpressMockURL]
                                   success:^(NSArray *feedItems) {
-                                      items = [NSArray arrayWithArray:feedItems];
-                                      testItemContent = [[feedItems firstObject] content];
+                                      RSSItem *item = [feedItems firstObject];
+                                      testItemContent = item.content;
                                   }
                                   failure:^(NSError *error) {
                                       
@@ -163,13 +166,12 @@ describe(@"RSSParser", ^{
         
         NSURL *rssWordpressMockURL = [NSURL fileURLWithPath:rssWordpressMock];
         
-        __block NSArray *items = nil;
         __block NSString *testItemContent = nil;
         
         [RSSParser parseRSSFeedForRequest:[NSURLRequest requestWithURL:rssWordpressMockURL]
                                   success:^(NSArray *feedItems) {
-                                      items = [NSArray arrayWithArray:feedItems];
-                                      testItemContent = [[feedItems lastObject] content];
+                                      RSSItem *item = [feedItems firstObject];
+                                      testItemContent = item.content;
                                   }
                                   failure:^(NSError *error) {
                                       

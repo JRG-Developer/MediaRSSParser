@@ -10,13 +10,13 @@
 
 @interface RSSItem (Private)
 
--(NSArray *)imagesFromHTMLString:(NSString *)htmlstr;
+- (NSArray *)imagesFromHTMLString:(NSString *)htmlstr;
 
 @end
 
 @implementation RSSItem
 
--(NSArray *)imagesFromItemDescription
+- (NSArray *)imagesFromItemDescription
 {
     if (self.itemDescription) {
         return [self imagesFromHTMLString:self.itemDescription];
@@ -25,7 +25,7 @@
     return nil;
 }
 
--(NSArray *)imagesFromContent
+- (NSArray *)imagesFromContent
 {
     if (self.content) {
         return [self imagesFromHTMLString:self.content];
@@ -36,7 +36,7 @@
 
 #pragma mark - retrieve images from html string using regexp (private methode)
 
--(NSArray *)imagesFromHTMLString:(NSString *)htmlstr
+- (NSArray *)imagesFromHTMLString:(NSString *)htmlstr
 {
     NSMutableArray *imagesURLStringArray = [[NSMutableArray alloc] init];
     
@@ -59,7 +59,7 @@
 
 #pragma mark - NSCoding
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super init]) {
         _title = [aDecoder decodeObjectForKey:@"title"];
@@ -90,7 +90,7 @@
     [aCoder encodeObject:self.guid forKey:@"guid"];
 }
 
-#pragma mark -
+#pragma mark - NSObject protocol
 
 - (BOOL)isEqual:(RSSItem *)object
 {
