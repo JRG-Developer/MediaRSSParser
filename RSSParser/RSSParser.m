@@ -132,12 +132,14 @@
         self.mediaThumbnails = [[NSMutableArray alloc] init];
         
     } else if ([elementName isEqual:@"media:credit"]) {
-        RSSMediaCredit *mediaCredit = [self mediaCreditFromAttributes:attributeDict];
-        [self.mediaCredits addObject:mediaCredit];
+        
+        self.currentMediaCredit = [self mediaCreditFromAttributes:attributeDict];
+        [self.mediaCredits addObject:self.currentMediaCredit];
         
     } else if ([elementName isEqualToString:@"media:thumbnail"]) {
         RSSMediaThumbnail *mediaThumbnail = [self mediaThumbnailFromAttributes:attributeDict];
         [self.mediaThumbnails addObject:mediaThumbnail];
+        
     }
     
     self.tmpString = [[NSMutableString alloc] init];
@@ -215,8 +217,8 @@
             
         } else if ([elementName isEqualToString:@"media:credit"]) {
             [self.currentMediaCredit setValue:self.tmpString];
-        }
             
+        }
     }
 }
 
