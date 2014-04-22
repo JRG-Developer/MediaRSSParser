@@ -29,6 +29,8 @@
 		118543F414E9AFE0001761CB /* ArticleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118543F214E9AFE0001761CB /* ArticleDetailViewController.m */; };
 		118543F514E9AFE0001761CB /* ArticleDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 118543F314E9AFE0001761CB /* ArticleDetailViewController.xib */; };
 		38D21F55D00F4BA7A4D6010A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2491A17B4E26435E940E1404 /* libPods.a */; };
+		447F71B218ED35D700242D10 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 447F71B118ED35D700242D10 /* NSString+HTML.m */; };
+		447F71B518ED35FE00242D10 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 447F71B418ED35FE00242D10 /* GTMNSString+HTML.m */; };
 		44FDE3C718EC18C4006499D2 /* RSSMediaCredit.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FDE3C418EC18C4006499D2 /* RSSMediaCredit.m */; };
 		44FDE3C818EC18C4006499D2 /* RSSMediaThumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FDE3C618EC18C4006499D2 /* RSSMediaThumbnail.m */; };
 		C6E456351B014048A1E4434B /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A5D50FCF4044DC3865DCB53 /* libPods-Tests.a */; };
@@ -82,6 +84,11 @@
 		118543F214E9AFE0001761CB /* ArticleDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArticleDetailViewController.m; sourceTree = "<group>"; };
 		118543F314E9AFE0001761CB /* ArticleDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArticleDetailViewController.xib; sourceTree = "<group>"; };
 		2491A17B4E26435E940E1404 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		447F71AC18ED299000242D10 /* BlockRSSParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockRSSParser.h; sourceTree = "<group>"; };
+		447F71B018ED35D700242D10 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
+		447F71B118ED35D700242D10 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
+		447F71B318ED35FE00242D10 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
+		447F71B418ED35FE00242D10 /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
 		44FDE3C318EC18C4006499D2 /* RSSMediaCredit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSMediaCredit.h; sourceTree = "<group>"; };
 		44FDE3C418EC18C4006499D2 /* RSSMediaCredit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSMediaCredit.m; sourceTree = "<group>"; };
 		44FDE3C518EC18C4006499D2 /* RSSMediaThumbnail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSMediaThumbnail.h; sourceTree = "<group>"; };
@@ -221,17 +228,30 @@
 		118543C114E9AC20001761CB /* RSSParser */ = {
 			isa = PBXGroup;
 			children = (
+				447F71B618ED360400242D10 /* Categories */,
+				447F71AC18ED299000242D10 /* BlockRSSParser.h */,
 				118543C214E9AC20001761CB /* RSSItem.h */,
 				118543C314E9AC20001761CB /* RSSItem.m */,
-				118543C414E9AC20001761CB /* RSSParser.h */,
-				118543C514E9AC20001761CB /* RSSParser.m */,
 				44FDE3C318EC18C4006499D2 /* RSSMediaCredit.h */,
 				44FDE3C418EC18C4006499D2 /* RSSMediaCredit.m */,
 				44FDE3C518EC18C4006499D2 /* RSSMediaThumbnail.h */,
 				44FDE3C618EC18C4006499D2 /* RSSMediaThumbnail.m */,
+				118543C414E9AC20001761CB /* RSSParser.h */,
+				118543C514E9AC20001761CB /* RSSParser.m */,
 			);
 			name = RSSParser;
 			path = ../RSSParser;
+			sourceTree = "<group>";
+		};
+		447F71B618ED360400242D10 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				447F71B318ED35FE00242D10 /* GTMNSString+HTML.h */,
+				447F71B418ED35FE00242D10 /* GTMNSString+HTML.m */,
+				447F71B018ED35D700242D10 /* NSString+HTML.h */,
+				447F71B118ED35D700242D10 /* NSString+HTML.m */,
+			);
+			name = Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -404,8 +424,10 @@
 				110A8A9814E9A30C0013AC07 /* AppDelegate.m in Sources */,
 				44FDE3C818EC18C4006499D2 /* RSSMediaThumbnail.m in Sources */,
 				118543C614E9AC20001761CB /* RSSItem.m in Sources */,
+				447F71B218ED35D700242D10 /* NSString+HTML.m in Sources */,
 				44FDE3C718EC18C4006499D2 /* RSSMediaCredit.m in Sources */,
 				118543C714E9AC20001761CB /* RSSParser.m in Sources */,
+				447F71B518ED35FE00242D10 /* GTMNSString+HTML.m in Sources */,
 				118543EF14E9ACD2001761CB /* ArticlesListeTableViewController.m in Sources */,
 				118543F414E9AFE0001761CB /* ArticleDetailViewController.m in Sources */,
 			);
