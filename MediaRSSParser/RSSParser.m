@@ -2,9 +2,26 @@
 //  RSSParser.m
 //  RSSParser
 //
+//  Modified by Joshua Greene on 4/2/14 (added basic support for Media RSS).
 //  Created by Thibaut LE LEVIER on 1/31/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 #import "RSSParser.h"
 
@@ -13,13 +30,13 @@
 
 #import "RSSItem.h"
 #import "RSSMediaCredit.h"
-#import "RSSMediaThumbnail.h"
+#import "RSSMediaItem.h"
 
 @interface RSSParser ()
 @property (nonatomic, strong) RSSItem *currentItem;
-@property (nonatomic, strong) RSSMediaCredit *currentMediaCredit;
 @property (nonatomic, strong) NSMutableArray *mediaCredits;
 @property (nonatomic, strong) NSMutableArray *mediaThumbnails;
+@property (nonatomic, strong) NSMutableArray *mediaContents;
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) NSMutableString *tmpString;
 @property (nonatomic, copy) void (^successBlock)(NSArray *feedItems);
@@ -86,7 +103,7 @@
 }
 
 - (void)parseRSSFeedForURLString:(NSString *)urlString
-                      parameters:(NSDictionary *)paremeters
+                      parameters:(NSDictionary *)parameters
                          success:(void (^)(NSArray *feedItems))success
                          failure:(void (^)(NSError *error))failure
 {
@@ -95,7 +112,7 @@
     [self setFailblock:failure];
     
     [self.client GET:urlString
-          parameters:paremeters
+          parameters:parameters
              success:^(NSURLSessionDataTask *task, NSXMLParser *responseObject) {
                  self.xmlParser = responseObject;
                  [self.xmlParser setDelegate:self];
@@ -122,6 +139,11 @@
 #pragma mark -
 #pragma mark NSXMLParser delegate
 
+- (void)parserDidStartDocument:(NSXMLParser *)parser
+{
+    self.items = [[NSMutableArray alloc] init];
+}
+
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName
   namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName
     attributes:(NSDictionary *)attributeDict
@@ -130,16 +152,19 @@
         self.currentItem = [[RSSItem alloc] init];
         self.mediaCredits = [[NSMutableArray alloc] init];
         self.mediaThumbnails = [[NSMutableArray alloc] init];
+        self.mediaContents = [[NSMutableArray alloc] init];
         
-    } else if ([elementName isEqual:@"media:credit"]) {
-        
-        self.currentMediaCredit = [self mediaCreditFromAttributes:attributeDict];
-        [self.mediaCredits addObject:self.currentMediaCredit];
+    } else if ([elementName isEqual:@"media:credit"]) {        
+        RSSMediaCredit *currentMediaCredit = [self mediaCreditFromAttributes:attributeDict];
+        [self.mediaCredits addObject:currentMediaCredit];
         
     } else if ([elementName isEqualToString:@"media:thumbnail"]) {
-        RSSMediaThumbnail *mediaThumbnail = [self mediaThumbnailFromAttributes:attributeDict];
-        [self.mediaThumbnails addObject:mediaThumbnail];
+        RSSMediaItem *mediaItem = [self mediaItemFromAttributes:attributeDict];
+        [self.mediaThumbnails addObject:mediaItem];
         
+    } else if ([elementName isEqualToString:@"media:content"]) {
+        RSSMediaItem *mediaItem = [self mediaItemFromAttributes:attributeDict];
+        [self.mediaContents addObject:mediaItem];
     }
     
     self.tmpString = [[NSMutableString alloc] init];
@@ -152,9 +177,9 @@
     return mediaCredit;
 }
 
-- (RSSMediaThumbnail *)mediaThumbnailFromAttributes:(NSDictionary *)attributes
+- (RSSMediaItem *)mediaItemFromAttributes:(NSDictionary *)attributes
 {
-    RSSMediaThumbnail *mediaThumbnail = [[RSSMediaThumbnail alloc] init];
+    RSSMediaItem *mediaThumbnail = [[RSSMediaItem alloc] init];
     mediaThumbnail.url = [NSURL URLWithString:attributes[@"url"]];
     mediaThumbnail.height = [attributes[@"height"] floatValue];
     mediaThumbnail.width = [attributes[@"width"] floatValue];
@@ -165,13 +190,11 @@
   namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
 {    
     if ([elementName isEqualToString:@"item"] || [elementName isEqualToString:@"entry"]) {
-        self.currentItem.mediaCredits = [self.mediaCredits copy];
-        self.currentItem.mediaThumbnails = [self.mediaThumbnails copy];
+        self.currentItem.mediaCredits = self.mediaCredits;
+        self.currentItem.mediaThumbnails = self.mediaThumbnails;
+        self.currentItem.mediaContent = self.mediaContents;
         [self.items addObject:self.currentItem];
         
-    } else if ([elementName isEqualToString:@"rss"] || [elementName isEqualToString:@"feed"]) {
-        self.successBlock(self.items);
-    
     } else if (self.currentItem != nil && self.tmpString != nil) {
         
         if ([elementName isEqualToString:@"title"]) {
@@ -215,8 +238,12 @@
         } else if ([elementName isEqualToString:@"media:description"]) {
             [self.currentItem setMediaDescription:self.tmpString];
             
+        } else if ([elementName isEqual:@"media:text"]) {
+            [self.currentItem setMediaText:self.tmpString];
+            
         } else if ([elementName isEqualToString:@"media:credit"]) {
-            [self.currentMediaCredit setValue:self.tmpString];
+            RSSMediaCredit *mediaCredit = [self.currentItem.mediaCredits lastObject];
+            [mediaCredit setValue:self.tmpString];
             
         }
     }
@@ -231,6 +258,15 @@
 {
     self.failblock(parseError);
     [parser abortParsing];
+}
+
+- (void)parserDidEndDocument:(NSXMLParser *)parser
+{
+    if (self.successBlock) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.successBlock(self.items);
+        });
+    }
 }
 
 @end

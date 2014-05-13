@@ -1,108 +1,53 @@
-# Block RSS Parser [![Build Status](https://travis-ci.org/tibo/BlockRSSParser.png?branch=master)](https://travis-ci.org/tibo/BlockRSSParser)
+# MediaRSSParser
 
-This is a simple <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a> and block based RSS parser.
+This is a simple Media RSS Parser, built on <a href=“https://github.com/tibo/BlockRSSParser”>BlockRSSParser</a> and <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a>.
 
-Block RSS Parser is now compatible with AFNetworking 2.x.
+## Getting Started
 
-## Memory management
+MediaRSSParser will soon be added to CocoaPods.
 
-BlockRSSParser now require ARC.
-If you need to use it without ARC, please use the 1.0 tag.
+Until then, follow these instructions to add it to your project manually:
 
-## AFNetworking 1.x compatibility
-
-Please use the 1.1 version (Podspec and git tag)
-
-## Get started
-
-Use CocoaPods! Just add this line to you Podfile: 
-
-```
-pod 'BlockRSSParser', '~> 2.1'
-```
-
-If you don't want to use CocoaPods, follow theses instructions for a manual install :
-
-1. Drag and drop the 4 files related to the parser:
-
-	-RSSParser.h
-
-	-RSSParser.m
-
-	-RSSItem.h
-
-	-RSSItem.m
+1. Drag the `MediaRSSParser` folder into your project, making sure `copy into project` is checked`.
 	
-2. You also need to add <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a> to your project
+2. You also need to add <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a> to your project (either manually or via CocoaPods).
 
-3. Include the two headers RSSParser.h and RSSItem.h where you need it
+3. `#import “RSSMediaParser.h”` wherever you need it.
 
-4. And than just use it this way:
-
-``` objective-c
- NSURLRequest *req = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://blog.lelevier.fr/rss"]];
-    [RSSParser parseRSSFeedForRequest:req success:^(NSArray *feedItems) {
-    	
-    	//you get an array of RSSItem
-    	
-    } failure:^(NSError *error) {
-    	
-    	//something went wrong
-
-    }];
-
-```
-
-## The RSS Item:
-
-With this parser you can get most of the informations provided by an RSS feed:
-
-``` objective-c
-@property (strong,nonatomic) NSString *title;
-@property (strong,nonatomic) NSString *itemDescripition;
-@property (strong,nonatomic) NSString *content;
-@property (strong,nonatomic) NSURL *link;
-@property (strong,nonatomic) NSURL *commentsLink;
-@property (strong,nonatomic) NSURL *commentsFeed;
-@property (strong,nonatomic) NSNumber *commentsCount;
-@property (strong,nonatomic) NSDate *pubDate;
-@property (strong,nonatomic) NSString *author;
-@property (strong,nonatomic) NSString *guid;
-
--(NSArray *)imagesFromItemDescription;
--(NSArray *)imagesFromContent;
-```
-note: take a look at the "RSS Standards" part
-
-## Using the sample project
-
-The sample project is here to provide you a quick way to see how to get started.
-You can use CocoaPods to download the dependencies. Go to the sample project folder and run:
-
-```shell
-pod install
-```
-and
-```shell
-open RSSParser_Sample.xcworkspace
-```
+4. See the class methods `RSSParser.h` for how to use it.
 
 ## RSS Standards
 
-RSS is one of the worst protocol in the world. There is many standard to describe an RSS feed and most of them are outdated.
+RSS is one of the worst protocols in the world. Unfortunately, it’s also one of the most commonly used.
 
-This parser is optimised to work with a Wordpress feed and some informations like the content or the comments informations will not be present with some other providers.
+There are so many “standards” to describe an RSS feed, and there isn’t much consistency between them.
 
-The sample code use a Tumblr feed provided for my personal blog. The content is empty but the full body of the article is present in the itemDescription (description in the feed) of the feed.
+This parser is optimized to work with Wordpress (simple RSS) and Deviant Art (Media RSS) feeds. Some information, like `comments` or `media` tags, may not be present in all providers’ feeds.
 
-## TODO
+## MediaRSSParser vs BlockRSSParser
 
--Testing => In Progress
+`MediaRSSParser` is built on top of `BlockRSSParser`, but it has several differences:
 
--Documentation
+The main difference is that support for `Media RSS` has been added to `MediaRSSParser`, where `BlockRSSParser` lacks this support (as of the current version on 5/13/14).
 
--Feed header data
+`MediaRSSParser` also explicitly provides model objects for `RSSMediaCredit` and `RSSMediaItem` (used for both `media:thumbnails` and `media:content` tag types), where `BlockRSSParser` uses an `NSDictionary` for `media credit` and doesn’t have a great plan in place for supporting `media:` tag types.
+
+The main reason for using model objects instead of a dictionary is that it’s usually easier for developers to work with native objects, instead of having to work with objects and keys in a dictionary.
+
+## Contributing
+
+Patches and additions are welcome!
+
+If you include support for a new tag type, please make sure that it’s common enough that others are likely to benefit from its inclusion in this project.
+
+To contribute:
+
+1) Fork this repo.
+
+2) Make your changes.
+
+3) Submit a pull request. Make sure to include your rationale for why this change is needed (especially for new tag support).
 
 ## License
 
-Like AFNetworking, this parser is available under the MIT license.
+Like BlockRSSParser and AFNetworking, this project is available under the MIT license (see the LICENSE file for more details).
