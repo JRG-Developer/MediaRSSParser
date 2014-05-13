@@ -4,7 +4,7 @@ This is a simple Media RSS Parser, built on <a href="https://github.com/tibo/Blo
 
 ## Getting Started
 
-MediaRSSParser will soon be added to CocoaPods.
+`MediaRSSParser` will soon be added to CocoaPods.
 
 Until then, follow these instructions to add it to your project manually:
 
@@ -50,4 +50,4 @@ To contribute:
 
 ## License
 
-Like BlockRSSParser and AFNetworking, this project is available under the MIT license (see the LICENSE file for more details).
+Like `BlockRSSParser` and `AFNetworking`, this project is available under the MIT license (see the LICENSE file for more details).
