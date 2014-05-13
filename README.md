@@ -1,6 +1,6 @@
 # MediaRSSParser
 
-This is a simple Media RSS Parser, built on <a href=“https://github.com/tibo/BlockRSSParser”>BlockRSSParser</a> and <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a>.
+This is a simple Media RSS Parser, built on <a href="https://github.com/tibo/BlockRSSParser">BlockRSSParser</a> and <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a>.
 
 ## Getting Started
 
