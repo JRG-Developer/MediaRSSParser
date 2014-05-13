@@ -8,13 +8,21 @@ This is a simple Media RSS Parser, built on <a href="https://github.com/tibo/Blo
 
 Until then, follow these instructions to add it to your project manually:
 
-1. Drag the `MediaRSSParser` folder into your project, making sure `Copy items into destination group's folder (if needed)` is checked.
+1. Clone this repo locally onto your computer or press `Download ZIP` to simply download the latest `master` commit.
+
+2. Drag the `MediaRSSParser` folder into your app project, making sure `Copy items into destination group's folder (if needed)` is checked.
 	
-2. You also need to add <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a> to your project (either manually or via CocoaPods).
+3. You also need to add <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a> to your project (either manually or via CocoaPods).
 
-3. Add `#import "MediaRSSParser.h"` wherever you need to do RSS parsing, or `#import "MediaRSSModels.h"` wherever you just need to use the models.
+4. Add `#import "MediaRSSParser.h"` wherever you need to do RSS parsing, or `#import "MediaRSSModels.h"` wherever you just need to use the models.
 
-4. See the class methods on `RSSParser.h` for how to use the RSS parser and the models for their properties.
+5. See the class methods on `RSSParser.h` for how to use the RSS parser and the models for their properties.
+
+# Versioning and Git History
+
+`MediaRSSParser` is based on `BlockRSSParser` and diverges around version `2.1`. Thereby, the first version of `MediaRSSParser` is actually a divergent `3.0` version of `BlockRSSParser`. For this reason, the `git` history of `BlockRSSParser` is actually included in `MediaRSSParser`.
+
+To try to avoid confusion, `MediaRSSParser` (as a separate project from `BlockRSSParser`) starts its versioning at `1.0`.
 
 ## RSS Standards
 
