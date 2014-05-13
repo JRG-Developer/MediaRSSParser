@@ -8,19 +8,19 @@ MediaRSSParser will soon be added to CocoaPods.
 
 Until then, follow these instructions to add it to your project manually:
 
-1. Drag the `MediaRSSParser` folder into your project, making sure `copy into project` is checked`.
+1. Drag the `MediaRSSParser` folder into your project, making sure `Copy items into destination group's folder (if needed)` is checked.
 	
 2. You also need to add <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a> to your project (either manually or via CocoaPods).
 
-3. `#import “RSSMediaParser.h”` wherever you need it.
+3. Add `#import "MediaRSSParser.h"` wherever you need to do RSS parsing, or `#import "MediaRSSModels.h"` wherever you just need to use the models.
 
-4. See the class methods `RSSParser.h` for how to use it.
+4. See the class methods on `RSSParser.h` for how to use the RSS parser and the models for their properties.
 
 ## RSS Standards
 
 RSS is one of the worst protocols in the world. Unfortunately, it’s also one of the most commonly used.
 
-There are so many “standards” to describe an RSS feed, and there isn’t much consistency between them.
+There are so many "standards" to describe an RSS feed, and there isn’t much consistency between them.
 
 This parser is optimized to work with Wordpress (simple RSS) and Deviant Art (Media RSS) feeds. Some information, like `comments` or `media` tags, may not be present in all providers’ feeds.
 
