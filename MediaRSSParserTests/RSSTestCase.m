@@ -1,8 +1,9 @@
 //
-//  RSSMediaThumbnail.m
-//  RSSParser
+//  AOSwapTestCase.m
+//  AOCells
 //
-//  Created by Joshua Greene on 4/2/14.
+//  Created by Joshua Greene on 2/26/14.
+//  Copyright (c) 2014 App-Order (http://app-order.com)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +23,16 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import "RSSMediaItem.h"
+#import "RSSTestCase.h"
+#import <objc/runtime.h>
 
-@implementation RSSMediaItem
+@implementation RSSTestCase
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
++ (void)swapInstanceMethodsForClass:(Class)cls selector:(SEL)sel1 andSelector:(SEL)sel2
 {
-  if (self = [super init]) {
-    _url = [aDecoder decodeObjectForKey:@"url"];
-    _size.height = [[aDecoder decodeObjectForKey:@"height"] floatValue];
-    _size.width = [[aDecoder decodeObjectForKey:@"width"] floatValue];
-  }
-  return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-  [aCoder encodeObject:self.url forKey:@"url"];
-  [aCoder encodeObject:@(self.size.height) forKey:@"height"];
-  [aCoder encodeObject:@(self.size.width) forKey:@"width"];
+    Method method1 = class_getInstanceMethod(cls, sel1);
+    Method method2 = class_getInstanceMethod(cls, sel2);
+    method_exchangeImplementations(method1, method2);
 }
 
 @end

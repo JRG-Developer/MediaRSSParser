@@ -2,7 +2,7 @@
 //  RSSParser.h
 //  RSSParser
 //
-//  Modified by Joshua Greene on 4/2/14 (added basic support for Media RSS).
+//  Modified by Joshua Greene on 4/2/14 (added support for Media RSS).
 //  Created by Thibaut LE LEVIER on 1/31/12.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,30 +27,42 @@
 
 @class AFHTTPSessionManager;
 
+/**
+ *  `RSSParser` is a wrapper around an `AFHTTPSessionManager` object, its `client` property, that handles the parsing of Media RSS feed data. On parse success, `feedItems` will contain an array of `RSSItem` objects.
+ */
+
 @interface RSSParser : NSObject <NSXMLParserDelegate>
-@property (nonatomic, strong) AFHTTPSessionManager *client;
-@property (nonatomic, strong) NSXMLParser *xmlParser;
 
-+ (void)parseRSSFeedForRequest:(NSURLRequest *)urlRequest
-                       success:(void (^)(NSArray *feedItems))success
-                       failure:(void (^)(NSError *error))failure;
-
-- (void)parseRSSFeedForURLString:(NSString *)urlString
-                         success:(void (^)(NSArray *feedItems))success
-                         failure:(void (^)(NSError *error))failure;
-
-- (void)parseRSSFeedForURL:(NSURL *)url
-                   success:(void (^)(NSArray *feedItems))success
-                   failure:(void (^)(NSError *error))failure;
-
-- (void)parseRSSFeedForRequest:(NSURLRequest *)urlRequest
-                       success:(void (^)(NSArray *feedItems))success
-                       failure:(void (^)(NSError *error))failure;
-
-- (void)parseRSSFeedForURLString:(NSString *)urlString
-                      parameters:(NSDictionary *)parameters
-                         success:(void (^)(NSArray *feedItems))success
-                         failure:(void (^)(NSError *error))failure;
+/**
+ *  This will cancel all of the `NSURLSessionTask` objects of the `client`, call `abortParsing` on `xmlParser`, and set both the `success` and `failure` blocks to `nil` (see `RSSParser_Protected.h` for a description of these internal properties).
+ 
+    Neither the `success` or `failure` block will be called if `cancel` is called (unless, of course, either is called prior to `cancel`).
+ */
 - (void)cancel;
+
+/**
+ *  This is a convenience method for creating a new `RSSParser` object and calling the `parseRSSFeed:parameters:success:failure:` instance method on it.
+ */
+
++ (RSSParser *)parseRSSFeed:(NSString *)urlString
+                 parameters:(NSDictionary *)parameters
+                    success:(void (^)(NSArray *feedItems))success
+                    failure:(void (^)(NSError *error))failure;
+
+/**
+ *  This method will initiate a GET request of the given `urlString`, including passing the `parameters`,  using the `client`. Both the `success` and `failure` blocks will be copied as internal properties (see `RSSParser_Protected` for a description of these internal properties).
+ *
+ *  @param urlString  The URL in string format to GET
+ *  @param parameters The parameters to be included in the GET request
+ *  @param success    The success block to be called on parser successful completion
+ *  @param failure    The failure block to be called on network or parser error
+
+ *  @warning Both the `success` and `failure` blocks capture self (creates a strong references self). This creates a retain cycle until either success or failure results (both `success` and `failure` block are set to `nil` after either occurs).
+ *
+ */
+- (void)parseRSSFeed:(NSString *)urlString
+          parameters:(NSDictionary *)parameters
+             success:(void (^)(NSArray *feedItems))success
+             failure:(void (^)(NSError *error))failure;
 
 @end

@@ -22,10 +22,21 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
+#import <CoreGraphics/CoreGraphics.h>
+
+/**
+ *  `RSSMediaItem` corresponds to either `media:content` or `media:thumbnail` element within an RSS `item` or `entry` element.
+ */
 
 @interface RSSMediaItem : NSObject <NSCoding>
+
+/**
+ *  Corresponds to the `url` attribute of its element.
+ */
 @property (nonatomic, copy) NSURL *url;
-@property (nonatomic, assign) float height;
-@property (nonatomic, assign) float width;
+
+/**
+ *  Corresponds to the `height` and `width` attribute of its element.
+ */
+@property (nonatomic) CGSize size;
 @end

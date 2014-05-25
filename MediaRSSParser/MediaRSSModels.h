@@ -3,7 +3,7 @@
 //  RSSParser
 //
 //  Created by Joshua Greene on 5/10/14.
-//  This project is builds on `BlockRSSParser` by Thibaut LE LEVIER (https://github.com/tibo/BlockRSSParser)
+//  This project builds on `BlockRSSParser` by Thibaut LE LEVIER (https://github.com/tibo/BlockRSSParser)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal

@@ -30,19 +30,19 @@
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
-    if (self = [super init]) {        
-        _role = [aDecoder decodeObjectForKey:@"role"];
-        _value = [aDecoder decodeObjectForKey:@"value"];
-        
-    }
+  if (self = [super init]) {
+    _role = [aDecoder decodeObjectForKey:@"role"];
+    _value = [aDecoder decodeObjectForKey:@"value"];
     
-    return self;
+  }
+  
+  return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:self.role forKey:@"role"];
-    [aCoder encodeObject:self.value forKey:@"value"];
+  [aCoder encodeObject:self.role forKey:@"role"];
+  [aCoder encodeObject:self.value forKey:@"value"];
 }
 
 @end
