@@ -1,6 +1,6 @@
 # MediaRSSParser
 
-This is a simple Media RSS Parser, built on <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a>.
+This is a Media RSS Parser, built on <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a>.
 
 `MediaRSSParser` was initially inspired by and based on <a href="https://github.com/tibo/BlockRSSParser">BlockRSSParser</a>.
 
@@ -8,9 +8,15 @@ While some similarities still exist, this project has taken a different path fro
 
 ## Getting Started
 
-`MediaRSSParser` will soon be added to CocoaPods.
+The easiest way to add `MediaRSSParser` to your project is using <a href="http://cocoapods.org">CocoaPods</a>.
 
-Until then, follow these instructions to add it to your project manually:
+Add the following to your `Podfile` to include CocoaPods in your workspace:
+
+`pod 'MediaRSSParser', '~> 1.0'`
+
+Then, simply run `pod install` as you normally do.
+
+If you don't want to use CocoaPods, you can alternatively include `MediaRSSParser` manually in your project by doing the following:
 
 1. Clone this repo locally onto your computer or press `Download ZIP` to simply download the latest `master` commit.
 
@@ -103,7 +109,7 @@ If you've never written unit tests before, that's okay! You can learn by checkin
 
 4) Write documentation comments for your changes (as needed). If you're proposing new tags be added, you *must* include a link to the namespace documentation.
 
-This project is (or will be soon) part of CocoaPods specs repo, which includes appledoc-parsed documentation hosted for each pod on <a href="http://cocoadocs.org">CocoaDocs</a>. If you're not familar with appledoc, check out Mattt Thompson's (<a href="https://twitter.com/mattt">@matt</a>) introductory <a href="http://nshipster.com/documentation/">post about it</a>.
+This project is part of the CocoaPods specs repo, which includes appledoc-parsed documentation hosted for each pod on <a href="http://cocoadocs.org">CocoaDocs</a>. If you're not familar with appledoc, check out Mattt Thompson's (<a href="https://twitter.com/mattt">@matt</a>) introductory <a href="http://nshipster.com/documentation/">post about it</a>.
 
 5) Submit a pull request. 
 
