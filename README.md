@@ -99,11 +99,11 @@ To contribute:
 
 3) Write unit tests for your changes (as needed). If possible, a TDD approach is best!
 
-If you've never written unit tests before, that's okay! You can learn by checking out Jon Reid's (<a href="https://twitter.com/qcoding">@qcoding</a>) excellent <http://qualitycoding.org/>website<a>, including a <a href="http://qualitycoding.org/unit-testing/">section just about unit testing</a>.
+If you've never written unit tests before, that's okay! You can learn by checking out Jon Reid's (<a href="https://twitter.com/qcoding">@qcoding</a>) excellent <a href="http://qualitycoding.org">website<a>, including a <a href="http://qualitycoding.org/unit-testing/">section just about unit testing</a>.
 
 4) Write documentation comments for your changes (as needed). If you're proposing new tags be added, you *must* include a link to the namespace documentation.
 
-This project is (or will be soon) part of CocoaPods specs repo, which includes appledoc-parsed documentation hosted for each pod on <a href="http://cocoadocs.org">CocoaDocs</a>. If you're not familar with appledoc, check out Mattt Thompson's (<a href="https://twitter.com/mattt">@matt</a>) introductory <a href="">post about it</a>
+This project is (or will be soon) part of CocoaPods specs repo, which includes appledoc-parsed documentation hosted for each pod on <a href="http://cocoadocs.org">CocoaDocs</a>. If you're not familar with appledoc, check out Mattt Thompson's (<a href="https://twitter.com/mattt">@matt</a>) introductory <a href="">post about it</a>.
 
 5) Submit a pull request. 
 
@@ -111,7 +111,7 @@ Make sure to include your rationale for why this change is needed (especially fo
 
 6) Last but not least, sit back and enjoy your awesomeness in helping make your fellow developers' lives a bit easier!
 
-Thank You!!!!</li>
+Thank You !!!!
 
 ## License
 
