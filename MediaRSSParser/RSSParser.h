@@ -29,7 +29,7 @@
 @class RSSChannel;
 
 /**
- *  `RSSParser` is a wrapper around an `AFHTTPSessionManager` object, its `client` property, that handles the parsing of Media RSS feed data. On parse success, `feedItems` will contain an array of `RSSItem` objects.
+ *  `RSSParser` is a wrapper around an `AFHTTPSessionManager` object, its `client` property, that handles the parsing of Media RSS feed data.
  */
 @interface RSSParser : NSObject <NSXMLParserDelegate>
 
