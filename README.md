@@ -72,13 +72,16 @@ The main reasons `MediaRSSParser` uses native objects instead of dictionaries ar
 
 `MediaRSSParser` has specific goals in mind:
 
-1) Make it as easy for third-party developers to use it. This means, making it as easy as possible for third-party developers to quickly answer questions like
+1) Make it as easy for third-party developers to use it. This means, making it as easy as possible for third-party developers to quickly answer questions like these:
 
-- "What is this property for?" (See the header files of the models, which are clearly commented including notes from the documentation)
+- "What is this property for?" 
+(See the header files of the models, which are clearly commented including notes from the documentation)
 
-- "Where can I find specifications for the current version of RSS and/or Media RSS?" (See the main header files `MediaRSSParser.h` or `MediaRSSModels.h` or many of the model headers too... but here they are just in case too: <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0</a> and <a href="http://www.rssboard.org/media-rss">Media RSS 1.5.1</a>
+- "Where can I find specifications for the current version of RSS and/or Media RSS?" 
+(See the main header files `MediaRSSParser.h` or `MediaRSSModels.h` or many of the model headers too... but here they are just in case too: <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0</a> and <a href="http://www.rssboard.org/media-rss">Media RSS 1.5.1</a>)
 
-- "How does the parser work and/or how do I know it will continue to work in future versions?" (See the extensive reads-like-sentences unit tests for both use examples and in-code documentation on how things are suppose to work.)
+- "How does the parser work and/or how do I know it will continue to work in future versions?" 
+(See the extensive reads-like-sentences unit tests for both use examples and in-code documentation on how things are suppose to work.)
 
 2) Document everything - this goes right along with making it easy for other developers to use it and keeping the project maintainable in the future.
 
