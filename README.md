@@ -30,11 +30,11 @@ In an effort to avoid confusion, `MediaRSSParser` starts its versioning over at 
 
 ## The RSS Protocol
 
-Let's be honest: RSS is one of the worst protocols in the world. Unfortunately, however, it's also one of the most commonly used.
+Let's be honest: RSS is one of the worst protocols in the world. Unfortunately, it's also one of the most commonly used.
 
-Why is this the case? I imagine it's because it's relatively easy for server side developers and/or admins to setup; it's been around forever; and it "feels" familiar to many developers (because at first glance it seems simple).
+Why is this the case? I imagine it's because it's relatively easy for server side developers/admins to setup; it's been around forever; and it "feels" familiar (because at first glance it seems simple).
 
-There are many challenges with RSS, but there are at least two main issues with it:
+There are many problems with RSS, but there are at least two main issues with it:
 
 1) While there *is* an RSS specification, there are many different interpretations and/or variations on it.
 
@@ -48,7 +48,7 @@ Hence, Media RSS is actually just a namespace addition to RSS 2.0.
 
 Again to narrow the project scope, `Media RSS` will be considered to mean the namespace specification defined at this <a href="http://www.rssboard.org/media-rss">Media RSS mirror</a>.
 
-However, this project aims to mitigate these issues by doing the following:
+This project aims to mitigate these issues by doing the following:
 
 1) Allowing for *matcher methods* (see `RSSParser.m` private methods) that allow different element names to match the same model object/property (e.g. `item` and `entry` both map to an `RSSItem` object).
 
