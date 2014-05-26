@@ -72,20 +72,17 @@ The main reasons `MediaRSSParser` uses native objects instead of dictionaries ar
 
 `MediaRSSParser` has specific goals in mind:
 
-<ol>
-<li>Make it as easy for third-party developers to use it. This means, making it as easy as possible for third-party developers to quickly answer questions like
+1) Make it as easy for third-party developers to use it. This means, making it as easy as possible for third-party developers to quickly answer questions like
 
 - "What is this property for?" (See the header files of the models, which are clearly commented including notes from the documentation)
 
 - "Where can I find specifications for the current version of RSS and/or Media RSS?" (See the main header files `MediaRSSParser.h` or `MediaRSSModels.h` or many of the model headers too... but here they are just in case too: <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0</a> and <a href="http://www.rssboard.org/media-rss">Media RSS 1.5.1</a>
 
 - "How does the parser work and/or how do I know it will continue to work in future versions?" (See the extensive reads-like-sentences unit tests for both use examples and in-code documentation on how things are suppose to work.)
-</li>
 
-<li>Document everything - this goes right along with making it easy for other developers to use it and keeping the project maintainable in the future.</li>
+2) Document everything - this goes right along with making it easy for other developers to use it and keeping the project maintainable in the future.
 
-<li>Unit test everything - again, this makes it easier for other developers to use (as it provides use examples) and helps with maintability... plus, you know, it doesn't feel right if those tests aren't there, right? ;]</li>
-</ol>
+3) Unit test everything - again, this makes it easier for other developers to use (as it provides use examples) and helps with maintability... plus, you know, it doesn't feel right if those tests aren't there, right? ;]
 
 ## Contributing
 
@@ -93,23 +90,23 @@ Patches and commonly-used tag additions are welcome!
 
 To contribute:
 
-<ol>
-<li>Fork this repo.</li>
-<li>Make your changes.</li>
-<li>Write unit tests for your changes (as needed). If possible, a TDD approach is best!
+1) Fork this repo.
+
+2) Make your changes.
+
+3) Write unit tests for your changes (as needed). If possible, a TDD approach is best!
 
 If you've never written unit tests before, that's okay! You can learn by checking out Jon Reid's (<a href="https://twitter.com/qcoding">@qcoding</a>) excellent <http://qualitycoding.org/>website<a>, including a <a href="http://qualitycoding.org/unit-testing/">section just about unit testing</a>.
-</li>
 
-<li>Write documentation comments for your changes (as needed). If you're proposing new tags be added, you *must* include a link to the namespace documentation.
+4) Write documentation comments for your changes (as needed). If you're proposing new tags be added, you *must* include a link to the namespace documentation.
 
 This project is (or will be soon) part of CocoaPods specs repo, which includes appledoc-parsed documentation hosted for each pod on <a href="http://cocoadocs.org">CocoaDocs</a>. If you're not familar with appledoc, check out Mattt Thompson's (<a href="https://twitter.com/mattt">@matt</a>) introductory <a href="">post about it</a>
-</li>
 
-<li>Submit a pull request, and make sure to include your rationale for why this change is needed (especially for new tag additions).</li>
+5) Submit a pull request. 
 
-<li>Last but not least, sit back and enjoy your awesomeness in helping make your fellow developers' lives a bit easier!</li>
-</ol>
+Make sure to include your rationale for why this change is needed (especially for new tag additions).
+
+6) Last but not least, sit back and enjoy your awesomeness in helping make your fellow developers' lives a bit easier!
 
 Thank You!!!!</li>
 
