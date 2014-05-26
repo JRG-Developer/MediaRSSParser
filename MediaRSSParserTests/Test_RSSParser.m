@@ -23,7 +23,7 @@
   return self;
 }
 
-- (void)setSuccessBlock:(void (^)(NSArray *))successBlock
+- (void)setSuccessBlock:(void (^)(RSSChannel *))successBlock
 {
   [super setSuccessBlock:successBlock];
   [self.parserCopyMock setSuccessBlock:successBlock];

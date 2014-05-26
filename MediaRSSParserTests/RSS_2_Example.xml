@@ -1,0 +1,35 @@
+<rss version="2.0">
+  <channel>
+    <title>RSS 2.0 Example</title>
+    <link>http://www.example.com</link>
+    <description>RSS 2.0 Example XML</description>
+    <language>en-us</language>
+    <copyright>Copyright 2014 Example, Inc.</copyright>
+    <managingEditor>editor@example.com</managingEditor>
+    <webMaster>webmaster@example.com</webMaster>
+    <pubDate>Tue, 10 Jun 2003 11:00:00 GMT</pubDate>
+    <lastBuildDate>Tue, 10 Jun 2003 12:00:00 GMT</lastBuildDate>
+    <generator>Example Editor 2.0</generator>
+    <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+    <ttl>60</ttl>
+    <item></item>
+    <item>
+      <title>Item 2 Title</title>
+      <link>http://www.example.com/item2</link>
+      <description>Item 2 Description</description>
+      <author>author2@example.com</author>
+      <comments>http://www.example.com/item2/comments</comments>
+      <guid>Item#0002</guid>
+      <pubDate>Tue, 10 Jun 2003 02:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Item 3 Title</title>
+      <link>http://www.example.com/item3</link>
+      <description>Item 3 Description</description>
+      <author>author3@example.com</author>
+      <comments>http://www.example.com/item3/comments</comments>
+      <guid>Item#0003</guid>
+      <pubDate>Tue, 10 Jun 2003 03:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

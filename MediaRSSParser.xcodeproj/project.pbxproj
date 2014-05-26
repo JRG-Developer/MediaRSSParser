@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		10D5053095B240E7B3A09D9D /* libPods-MediaRSSParserTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9430DA407CEB4C96B2885102 /* libPods-MediaRSSParserTests.a */; };
+		444B3A3F193273E10038D9FF /* RSSChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 444B3A3E193273E10038D9FF /* RSSChannel.m */; };
+		444B3A421932DEC90038D9FF /* RSSMediaThumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = 444B3A411932DEC90038D9FF /* RSSMediaThumbnail.m */; };
+		444B3A4A193325600038D9FF /* RSS_2_Example.xml in Resources */ = {isa = PBXBuildFile; fileRef = 444B3A49193325600038D9FF /* RSS_2_Example.xml */; };
+		444B3A4C19333EA70038D9FF /* Media_RSS_Example.xml in Resources */ = {isa = PBXBuildFile; fileRef = 444B3A4B19333EA70038D9FF /* Media_RSS_Example.xml */; };
 		44A30817192FEEAD00D65886 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A30816192FEEAD00D65886 /* NSString+HTML.m */; };
 		44A47EC8192E656C00B0B940 /* RSSParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A47EC7192E656C00B0B940 /* RSSParserTests.m */; };
 		44A47ECE192E65A900B0B940 /* Test_RSSParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A47ECD192E65A900B0B940 /* Test_RSSParser.m */; };
@@ -22,7 +26,7 @@
 		44F4D706192ACCFB00B1C78A /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 44F4D6F8192ACCFB00B1C78A /* GTMNSString+HTML.m */; };
 		44F4D708192ACCFB00B1C78A /* RSSItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 44F4D6FF192ACCFB00B1C78A /* RSSItem.m */; };
 		44F4D709192ACCFB00B1C78A /* RSSMediaCredit.m in Sources */ = {isa = PBXBuildFile; fileRef = 44F4D701192ACCFB00B1C78A /* RSSMediaCredit.m */; };
-		44F4D70A192ACCFB00B1C78A /* RSSMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 44F4D703192ACCFB00B1C78A /* RSSMediaItem.m */; };
+		44F4D70A192ACCFB00B1C78A /* RSSMediaContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 44F4D703192ACCFB00B1C78A /* RSSMediaContent.m */; };
 		44F4D70B192ACCFB00B1C78A /* RSSParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 44F4D705192ACCFB00B1C78A /* RSSParser.m */; };
 		4BFC5B3F1E6F447784BF55FC /* libPods-MediaRSSParser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 891DE1AC37714A98A22A3026 /* libPods-MediaRSSParser.a */; };
 /* End PBXBuildFile section */
@@ -50,6 +54,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		444B3A3D193273E10038D9FF /* RSSChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSChannel.h; sourceTree = "<group>"; };
+		444B3A3E193273E10038D9FF /* RSSChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSChannel.m; sourceTree = "<group>"; };
+		444B3A401932DEC90038D9FF /* RSSMediaThumbnail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSMediaThumbnail.h; sourceTree = "<group>"; };
+		444B3A411932DEC90038D9FF /* RSSMediaThumbnail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSMediaThumbnail.m; sourceTree = "<group>"; };
+		444B3A49193325600038D9FF /* RSS_2_Example.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = RSS_2_Example.xml; sourceTree = "<group>"; };
+		444B3A4B19333EA70038D9FF /* Media_RSS_Example.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Media_RSS_Example.xml; sourceTree = "<group>"; };
 		44A30815192FEEAD00D65886 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
 		44A30816192FEEAD00D65886 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 		44A47EC7192E656C00B0B940 /* RSSParserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSParserTests.m; sourceTree = "<group>"; };
@@ -74,8 +84,8 @@
 		44F4D6FF192ACCFB00B1C78A /* RSSItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSItem.m; sourceTree = "<group>"; };
 		44F4D700192ACCFB00B1C78A /* RSSMediaCredit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSMediaCredit.h; sourceTree = "<group>"; };
 		44F4D701192ACCFB00B1C78A /* RSSMediaCredit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSMediaCredit.m; sourceTree = "<group>"; };
-		44F4D702192ACCFB00B1C78A /* RSSMediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSMediaItem.h; sourceTree = "<group>"; };
-		44F4D703192ACCFB00B1C78A /* RSSMediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSMediaItem.m; sourceTree = "<group>"; };
+		44F4D702192ACCFB00B1C78A /* RSSMediaContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSMediaContent.h; sourceTree = "<group>"; };
+		44F4D703192ACCFB00B1C78A /* RSSMediaContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSMediaContent.m; sourceTree = "<group>"; };
 		44F4D704192ACCFB00B1C78A /* RSSParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSParser.h; sourceTree = "<group>"; };
 		44F4D705192ACCFB00B1C78A /* RSSParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSParser.m; sourceTree = "<group>"; };
 		44F4D70F192ACD8600B1C78A /* MediaRSSParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaRSSParser.h; sourceTree = "<group>"; };
@@ -111,6 +121,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		444B3A43193324230038D9FF /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				444B3A4B19333EA70038D9FF /* Media_RSS_Example.xml */,
+				444B3A49193325600038D9FF /* RSS_2_Example.xml */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
 		44A47EC9192E658300B0B940 /* Cases */ = {
 			isa = PBXGroup;
 			children = (
@@ -199,6 +218,7 @@
 				44A47EC9192E658300B0B940 /* Cases */,
 				44A47ED5192E96ED00B0B940 /* Categories */,
 				44A47ECA192E659100B0B940 /* Classes */,
+				444B3A43193324230038D9FF /* Data */,
 				44F4D6E8192ACC8900B1C78A /* Supporting Files */,
 			);
 			path = MediaRSSParserTests;
@@ -227,12 +247,16 @@
 		44F4D70D192ACD2E00B1C78A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				444B3A3D193273E10038D9FF /* RSSChannel.h */,
+				444B3A3E193273E10038D9FF /* RSSChannel.m */,
 				44F4D6FE192ACCFB00B1C78A /* RSSItem.h */,
 				44F4D6FF192ACCFB00B1C78A /* RSSItem.m */,
+				44F4D702192ACCFB00B1C78A /* RSSMediaContent.h */,
+				44F4D703192ACCFB00B1C78A /* RSSMediaContent.m */,
 				44F4D700192ACCFB00B1C78A /* RSSMediaCredit.h */,
 				44F4D701192ACCFB00B1C78A /* RSSMediaCredit.m */,
-				44F4D702192ACCFB00B1C78A /* RSSMediaItem.h */,
-				44F4D703192ACCFB00B1C78A /* RSSMediaItem.m */,
+				444B3A401932DEC90038D9FF /* RSSMediaThumbnail.h */,
+				444B3A411932DEC90038D9FF /* RSSMediaThumbnail.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -321,7 +345,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				444B3A4A193325600038D9FF /* RSS_2_Example.xml in Resources */,
 				44F4D6EC192ACC8900B1C78A /* InfoPlist.strings in Resources */,
+				444B3A4C19333EA70038D9FF /* Media_RSS_Example.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,8 +421,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				444B3A3F193273E10038D9FF /* RSSChannel.m in Sources */,
 				44F4D70B192ACCFB00B1C78A /* RSSParser.m in Sources */,
-				44F4D70A192ACCFB00B1C78A /* RSSMediaItem.m in Sources */,
+				444B3A421932DEC90038D9FF /* RSSMediaThumbnail.m in Sources */,
+				44F4D70A192ACCFB00B1C78A /* RSSMediaContent.m in Sources */,
 				44F4D706192ACCFB00B1C78A /* GTMNSString+HTML.m in Sources */,
 				44F4D709192ACCFB00B1C78A /* RSSMediaCredit.m in Sources */,
 				44A30817192FEEAD00D65886 /* NSString+HTML.m in Sources */,

@@ -2,7 +2,7 @@
 //  RSSParser.h
 //  RSSParser
 //
-//  Modified by Joshua Greene on 4/2/14 (added support for Media RSS).
+//  Modified by Joshua Greene on 4/2/14.
 //  Created by Thibaut LE LEVIER on 1/31/12.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,17 +26,23 @@
 #import <Foundation/Foundation.h>
 
 @class AFHTTPSessionManager;
+@class RSSChannel;
 
 /**
  *  `RSSParser` is a wrapper around an `AFHTTPSessionManager` object, its `client` property, that handles the parsing of Media RSS feed data. On parse success, `feedItems` will contain an array of `RSSItem` objects.
  */
-
 @interface RSSParser : NSObject <NSXMLParserDelegate>
 
 /**
+ *  The date formatter used for formatting dates from the RSS feed. This object is created on `init` of the `RSSParser`. If your RSS feed uses an atypical date format, you can set the correct date format on this object. The default date format is `EEE, dd MMM yyyy HH:mm:ss Z`.
+ */
+@property (nonatomic, strong, readonly) NSDateFormatter *dateFormatter;
+
+
+/**
  *  This will cancel all of the `NSURLSessionTask` objects of the `client`, call `abortParsing` on `xmlParser`, and set both the `success` and `failure` blocks to `nil` (see `RSSParser_Protected.h` for a description of these internal properties).
- 
-    Neither the `success` or `failure` block will be called if `cancel` is called (unless, of course, either is called prior to `cancel`).
+ *
+ *  Neither the `success` or `failure` block will be called if `cancel` is called (unless, of course, either is called prior to `cancel`).
  */
 - (void)cancel;
 
@@ -46,7 +52,7 @@
 
 + (RSSParser *)parseRSSFeed:(NSString *)urlString
                  parameters:(NSDictionary *)parameters
-                    success:(void (^)(NSArray *feedItems))success
+                    success:(void (^)(RSSChannel *channel))success
                     failure:(void (^)(NSError *error))failure;
 
 /**
@@ -62,7 +68,7 @@
  */
 - (void)parseRSSFeed:(NSString *)urlString
           parameters:(NSDictionary *)parameters
-             success:(void (^)(NSArray *feedItems))success
+             success:(void (^)(RSSChannel *channel))success
              failure:(void (^)(NSError *error))failure;
 
 @end

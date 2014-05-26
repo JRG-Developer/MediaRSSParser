@@ -1,0 +1,80 @@
+<rss version="2.0">
+  <channel>
+    <title>Media RSS Example</title>
+    <link>http://www.media.example.com</link>
+    <description>Media RSS Example XML</description>
+    <language>en-us</language>
+    <copyright>Copyright 2014 Media Example, Inc.</copyright>
+    <managingEditor>media.editor@example.com</managingEditor>
+    <webMaster>media.webmaster@example.com</webMaster>
+    <pubDate>Tue, 10 Jun 2003 02:00:00 GMT</pubDate>
+    <lastBuildDate>Tue, 10 Jun 2003 03:00:00 GMT</lastBuildDate>
+    <generator>Media Example Editor 2.0</generator>
+    <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+    <ttl>45</ttl>
+    
+    <item>
+      <title>Media Item 1 Title</title>
+      <link>http://www.example.com/media-item1</link>
+      <description>Media Item 1 Description</description>
+      <author>media.author1@example.com</author>
+      <comments>http://www.example.com/media-item1/comments</comments>
+      <guid>Media-Item#0001</guid>
+      <pubDate>Tue, 10 Jun 2003 01:00:00 GMT</pubDate>
+      
+      <media:title>Media Title 1</media:title>
+      <media:description>Media Description 1</media:description>
+      <media:text>Media Text 1</media:text>
+      
+      <media:content />      
+      <media:content
+        url="http://www.example.com/movie1.mov"
+        fileSize="12216320"
+        type="video/quicktime"
+        medium="video"
+        isDefault="true"
+        expression="full"
+        bitrate="128"
+        framerate="25"
+        samplingrate="44.1"
+        channels="2"
+        duration="185"
+        height="200"
+        width="300"
+        lang="en" />
+        
+        <media:thumbnail />        
+        <media:thumbnail
+          url="http://www.example.com/thumbnails/movie1-01"
+          height="50"
+          width="75"
+          time="0:0:22.0" />
+        
+        <media:credit />
+        <media:credit role="co-artist">Bob Artist</media:credit>
+    </item>
+    
+    <item>
+      <title>Media Item 2 Title</title>
+      <link>http://www.example.com/media-item2</link>
+      <description>Media Item 2 Description</description>
+      <author>media.author2@example.com</author>
+      <comments>http://www.example.com/media-item2/comments</comments>
+      <guid>Media-Item#0002</guid>
+      <pubDate>Tue, 10 Jun 2003 02:00:00 GMT</pubDate>
+      
+      <media:title>Media Title 2</media:title>
+      <media:description>Media Description 2</media:description>
+      <media:text>Media Text 2</media:text>
+      
+      <media:group>
+        <media:content />          
+        <media:content
+          url="http://www.example.com/image.jpg"
+          height="1000"
+          width="1500"/>
+      </media:group>
+
+    </item>
+  </channel>
+</rss>

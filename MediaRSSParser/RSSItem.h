@@ -26,109 +26,159 @@
 #import <Foundation/Foundation.h>
 
 /**
- *  `RSSItem` corresponds to a single RSS `item` or `entry` element within an RSS feed.
+ *  `RSSItem` corresponds to a single `item` or `entry` element within an RSS feed.
+ *
+ *  Many properties on `RSSItem` are from the RSS 2.0 specification, see http://cyber.law.harvard.edu/rss/rss.html for reference, and some are from the Media RSS 1.5.1 specification, see http://www.rssboard.org/media-rss for reference,  which is a namespace extension to the RSS 2.0 specification.
+ *
+ *  Per the RSS 2.0 specification, "an item may represent a "story" -- much like a story in a newspaper or magazine; if so its description is a synopsis of the story, and the link points to the full story. An item may also be complete in itself, if so, the description contains the text (entity-encoded HTML is allowed), and the link and title may be omitted. All elements of an item are optional, however at least one of title or description must be present."
  */
 @interface RSSItem : NSObject <NSCoding>
 
+#pragma mark - RSS 2.0
+///---------------------
+/// @name RSS 2.0
+///---------------------
+
 /**
- *  Corresponds to the `title` element within an RSS `item` or `entry` element.
+ *  This property corresponds to the `title` element within an `item` element.
+ *
+ *  Per RSS 2.0 specification, it is the "title of the item."
  */
 @property (nonatomic, copy) NSString *title;
 
 /**
- *  Corresponds to the `description` element within an RSS `item` or `entry` element.
- */
-@property (nonatomic, copy) NSString *itemDescription;
-
-/**
- *  Corresponds to the `content` or `content:encoded` element within an RSS `item` or `entry` element.
- */
-@property (nonatomic, copy) NSString *content;
-
-/**
- *  Corresponds to the `link` element within an RSS `item` or `entry` element.
+ *  This property corresponds to the `link` element within an `item` element.
+ *
+ *  Per RSS 2.0 specification, it is the "URL of the item," e.g. to the HTML web page for the item.
  */
 @property (nonatomic, copy) NSURL *link;
 
 /**
- *  Corresponds to the `comments` element within an RSS `item` or `entry` element.
+ *  This property corresponds to the `description` element within an `item`. 
+ *  
+ *  Per RSS 2.0 specification, it is the "item synopsis."
  */
-@property (nonatomic, copy) NSURL *commentsLink;
+@property (nonatomic, copy) NSString *itemDescription;
 
 /**
- *  Corresponds to the `wfw:commentRss` element within an RSS `item` or `entry` element.
+ *  This property corresponds to the `author` element within an `item` element.
+ *  
+ *  Per RSS 2.0 specification, it is the "email address of the author of the item."
  */
-@property (nonatomic, copy) NSURL *commentsFeed;
+@property (nonatomic, copy) NSString *authorEmail;
 
 /**
- *  Corresponds to the `slash:comments` element within an RSS `item` or `entry` element.
+ *  This property corresponds to the `comments` element within an `item` element.
+ *
+ *  Per RSS 2.0 specification, it is the "URL of a page for comments relating to the item."
  */
-
-@property (nonatomic, copy) NSNumber *commentsCount;
+@property (nonatomic, copy) NSURL *commentsURL;
 
 /**
- *  Corresponds to the `pubDate` element within an RSS `item` or `entry` element. The date format is expected to be `EEE, dd MMM yyyy HH:mm:ss Z`.
- */
-@property (nonatomic, copy) NSDate *pubDate;
-
-/**
- *  Corresponds to the `dc:creator` element within an RSS `item` or `entry` element.
- */
-@property (nonatomic, copy) NSString *author;
-
-/**
- *  Corresponds to the `guid` element within an RSS `item` or `entry` element.
+ *  This property corresponds to the `guid` element within an `item` element.
+ *  
+ *  Per RSS 2.0 specification, it is "a string that uniquely identifies the item."
  */
 @property (nonatomic, copy) NSString *guid;
 
 /**
- *  Corresponds to the `media:title` element within an RSS `item` or `entry` element.
+ *  This property corresponds to the `pubDate` element within an `item` element.
+ *
+ *  Per RSS 2.0 specification, it "indicates when the item was published."
+ *
+ *  The date format is expected to be `EEE, dd MMM yyyy HH:mm:ss Z`.
+ */
+@property (nonatomic, copy) NSDate *pubDate;
+
+#pragma mark - Media RSS - Primary Elements
+///---------------------
+/// @name Media RSS - Primary Elements
+///---------------------
+
+/**
+ *  This is an array of `RSSMediaContent` objects, corresponding to the `media:content` elements within an `item` element.
+ *
+ *  This is part of the Media RSS specification, a namespace extension to RSS 2.0.
+ *  
+ *  Per the Media RSS specification, "this element can be used to publish any type of media."
+ */
+@property (nonatomic, copy) NSArray *mediaContents;
+
+#pragma mark - Media RSS - Optional Elements
+///---------------------
+/// @name Media RSS - Optional Elements
+///---------------------
+
+/**
+ *  This property corresponds to the `media:title` element within an `item` element.
+ *  
+ *  This is part of the Media RSS specification, a namespace extension to RSS 2.0.
+ *
+ *  Per the Media RSS specification, it is "the title of the particular media object."
  */
 @property (nonatomic, copy) NSString *mediaTitle;
 
 /**
- *  Corresponds to the `media:description` element within an RSS RSS `item` or `entry` element.
+ *  Corresponds to the `media:description` element within an `item` element.
+ *  
+ *  This is part of the Media RSS specification, a namespace extension to RSS 2.0.
+ *  
+ *  Per the Media RSS specification, it is a "short description describing the media object typically a sentence in length."
  */
 @property (nonatomic, copy) NSString *mediaDescription;
 
 /**
- *  Corresponds to the `media:text` element within an RSS `item` or `entry` element.
- */
-@property (nonatomic, copy) NSString *mediaText;
-
-/**
- *  This is an array of `RSSMediaCredit` objects, corresponding to the `media:credit` elements within an RSS `item` or `entry` element.
- */
-@property (nonatomic, copy) NSArray *mediaCredits;
-
-/**
- *  This is an array of `RSSMediaItem` objects, corresponding to the `media:thumbnail` elements within an RSS `item` or `entry` element.
+ *  This is an array of `RSSMediaThumbnail` objects, corresponding to the `media:thumbnail` elements within an `item` element.
+ *
+ *  This is part of the Media RSS specification, a namespace extension to RSS 2.0.
+ *
+ *  Per the Media RSS specification, it "allows particular images to be used as representative images for the media object. If multiple thumbnails are included, and time coding is not at play, it is assumed that the images are in order of importance."
  */
 @property (nonatomic, copy) NSArray *mediaThumbnails;
 
 /**
- *  This is an array of `RSSMediaItem` objects, corresponding to the `media:content` elements within an RSS `item` or `entry` element.
+ *  This is an array of `RSSMediaCredit` objects, corresponding to the `media:credit` elements within an `item` element.
+ *
+ *  This is part of the Media RSS specification, a namespace extension to RSS 2.0. 
+ *
+ *  Per the Media RSS specification, it is a "notable entity and the contribution to the creation of the media object."
  */
-@property (nonatomic, copy) NSArray *mediaContents;
+@property (nonatomic, copy) NSArray *mediaCredits;
+
+/**
+ *  Corresponds to the `media:text` element within an `item` element.
+ *  
+ *  This is part of the Media RSS specification, a namespace extension to RSS 2.0.
+ *
+ *  Per the Media RSS specification, it "allows the inclusion of a text transcript, closed captioning or lyrics of the media content."
+ */
+@property (nonatomic, copy) NSString *mediaText;
+
+#pragma mark - Getting Embedded Images
+///---------------------
+/// @name Getting Embedded Images
+///---------------------
 
 /**
  *  Calls `imagesFromHTML:` passing in its `itemDescription` property.
+ *
  *  @return An array of `NSString` objects containing links (strings starting within `http` or `https`) to all images from the `itemDescription` property.
  */
 - (NSArray *)imagesFromItemDescription;
 
 /**
- *  Calls `imagesFromHTML:` passing in its `content` property.
- *  @return An array of `NSString` objects containing links (strings starting within `http` or `https`) to all images from the `content` property.
+ *  Calls `imagesFromHTML:` passing in its `mediaText` property.
+ *
+ *  @return An array of `NSString` objects containing links (strings starting within `http` or `https`) to all images from the `mediaText` property.
  */
-- (NSArray *)imagesFromContent;
+- (NSArray *)imagesFromMediaText;
 
 /**
- *  Creates an array of `NSString` objects containing links (starting with either `http` or `https` only) to all images from the passed in `html` property. This method uses an `NSRegularExpression` to search for strings matching the format `(https?)\\S*(png|jpg|jpeg|gif)`.
+ *  Creates an array of `NSString` objects containing URLs (starting with either `http` or `https` only) to all images from the passed in `html` property. This method uses an `NSRegularExpression` to search for strings matching the format `(https?)\\S*(png|jpg|jpeg|gif)`.
  *
  *  @param html The string to search for images (http(s) links).
  *
- *  @return An array of `NSString` objects containing links (strings starting within `http` or `https`) to all images within the passed in `html` string.
+ *  @return An array of `NSString` objects containing URLs (strings starting within `http` or `https`) to all images within the passed in `html` string.
  */
 - (NSArray *)imagesFromHTML:(NSString *)html;
 

@@ -27,12 +27,33 @@
 #import <objc/runtime.h>
 
 @implementation RSSTestCase
+{
+  dispatch_semaphore_t sema;
+}
 
 + (void)swapInstanceMethodsForClass:(Class)cls selector:(SEL)sel1 andSelector:(SEL)sel2
 {
     Method method1 = class_getInstanceMethod(cls, sel1);
     Method method2 = class_getInstanceMethod(cls, sel2);
     method_exchangeImplementations(method1, method2);
+}
+
+- (void)beginAsynchronousOperation
+{
+  sema = dispatch_semaphore_create(0);
+}
+
+- (void)waitForAsyncronousOperation
+{
+  while (dispatch_semaphore_wait(sema, DISPATCH_TIME_NOW))
+  {
+    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
+  }
+}
+
+- (void)endAsynchronousOperation
+{
+  dispatch_semaphore_signal(sema);
 }
 
 @end

@@ -27,22 +27,16 @@
 
 @implementation RSSItem
 
+#pragma mark - Getting Images from HTML
+
 - (NSArray *)imagesFromItemDescription
 {
-  if (self.itemDescription) {
-    return [self imagesFromHTML:self.itemDescription];
-  }
-  
-  return nil;
+  return self.itemDescription.length ? [self imagesFromHTML:self.itemDescription] : nil;
 }
 
-- (NSArray *)imagesFromContent
+- (NSArray *)imagesFromMediaText
 {
-  if (self.content) {
-    return [self imagesFromHTML:self.content];
-  }
-  
-  return nil;
+  return self.mediaText.length ? [self imagesFromHTML:self.mediaText] : nil;
 }
 
 - (NSArray *)imagesFromHTML:(NSString *)html
@@ -72,20 +66,19 @@
 {
   if (self = [super init]) {
     _title = [aDecoder decodeObjectForKey:@"title"];
-    _itemDescription = [aDecoder decodeObjectForKey:@"itemDescription"];
-    _content = [aDecoder decodeObjectForKey:@"content"];
     _link = [aDecoder decodeObjectForKey:@"link"];
-    _commentsLink = [aDecoder decodeObjectForKey:@"commentsLink"];
-    _commentsFeed = [aDecoder decodeObjectForKey:@"commentsFeed"];
-    _commentsCount = [aDecoder decodeObjectForKey:@"commentsCount"];
-    _pubDate = [aDecoder decodeObjectForKey:@"pubDate"];
-    _author = [aDecoder decodeObjectForKey:@"author"];
+    _itemDescription = [aDecoder decodeObjectForKey:@"itemDescription"];
+    _authorEmail = [aDecoder decodeObjectForKey:@"authorEmail"];
+    _commentsURL = [aDecoder decodeObjectForKey:@"commentsURL"];
     _guid = [aDecoder decodeObjectForKey:@"guid"];
+    _pubDate = [aDecoder decodeObjectForKey:@"pubDate"];
     
+    _mediaContents = [aDecoder decodeObjectForKey:@"mediaContents"];
     _mediaTitle = [aDecoder decodeObjectForKey:@"mediaTitle"];
     _mediaDescription = [aDecoder decodeObjectForKey:@"mediaDescription"];
     _mediaCredits = [aDecoder decodeObjectForKey:@"mediaCredits"];
     _mediaThumbnails = [aDecoder decodeObjectForKey:@"mediaThumbnails"];
+    _mediaText = [aDecoder decodeObjectForKey:@"mediaText"];
   }
   return self;
 }
@@ -93,41 +86,38 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
   [aCoder encodeObject:self.title forKey:@"title"];
-  [aCoder encodeObject:self.itemDescription forKey:@"itemDescription"];
-  [aCoder encodeObject:self.content forKey:@"content"];
   [aCoder encodeObject:self.link forKey:@"link"];
-  [aCoder encodeObject:self.commentsLink forKey:@"commentsLink"];
-  [aCoder encodeObject:self.commentsFeed forKey:@"commentsFeed"];
-  [aCoder encodeObject:self.commentsCount forKey:@"commentsCount"];
-  [aCoder encodeObject:self.pubDate forKey:@"pubDate"];
-  [aCoder encodeObject:self.author forKey:@"author"];
+  [aCoder encodeObject:self.itemDescription forKey:@"itemDescription"];
+  [aCoder encodeObject:self.authorEmail forKey:@"authorEmail"];
+  [aCoder encodeObject:self.commentsURL forKey:@"commentsLink"];
   [aCoder encodeObject:self.guid forKey:@"guid"];
+  [aCoder encodeObject:self.pubDate forKey:@"pubDate"];
   
+  [aCoder encodeObject:self.mediaContents forKey:@"mediaContents"];
   [aCoder encodeObject:self.mediaTitle forKey:@"mediaTitle"];
   [aCoder encodeObject:self.mediaDescription forKey:@"mediaDescription"];
   [aCoder encodeObject:self.mediaCredits forKey:@"mediaCredits"];
   [aCoder encodeObject:self.mediaThumbnails forKey:@"mediaThumbnails"];
+  [aCoder encodeObject:self.mediaText forKey:@"mediaText"];
 }
 
 #pragma mark - NSObject Protocol
 
 - (BOOL)isEqual:(RSSItem *)object
 {
-  if (![object isKindOfClass:[self class]]) {
-    return NO;
-  }
-  return [self.link.absoluteString isEqualToString:object.link.absoluteString];
+  return [object isKindOfClass:[self class]] &&
+    [object.link.absoluteString isEqualToString:self.link.absoluteString];
 }
 
 - (NSUInteger)hash
 {
-  return [self.link hash];
+  return [self.link.absoluteString hash];
 }
 
 - (NSString *)description
 {
   return [NSString stringWithFormat:@"<%@: %@>", [self class],
-          [self.title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+          [self.title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
 }
 
 @end

@@ -1,8 +1,8 @@
 //
 //  RSSMediaThumbnail.m
-//  RSSParser
+//  MediaRSSParser
 //
-//  Created by Joshua Greene on 4/2/14.
+//  Created by Joshua Greene on 5/25/14.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,9 +22,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import "RSSMediaItem.h"
+#import "RSSMediaThumbnail.h"
 
-@implementation RSSMediaItem
+@implementation RSSMediaThumbnail
+
+#pragma mark - NSCoding
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
@@ -32,6 +34,7 @@
     _url = [aDecoder decodeObjectForKey:@"url"];
     _size.height = [[aDecoder decodeObjectForKey:@"height"] floatValue];
     _size.width = [[aDecoder decodeObjectForKey:@"width"] floatValue];
+    _timeOffset = [aDecoder decodeObjectForKey:@"timeOffset"];
   }
   return self;
 }
@@ -41,6 +44,7 @@
   [aCoder encodeObject:self.url forKey:@"url"];
   [aCoder encodeObject:@(self.size.height) forKey:@"height"];
   [aCoder encodeObject:@(self.size.width) forKey:@"width"];
+  [aCoder encodeObject:self.timeOffset forKey:@"timeOffset"];
 }
 
 @end

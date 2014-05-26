@@ -1,8 +1,8 @@
 //
 //  RSSMediaThumbnail.h
-//  RSSParser
+//  MediaRSSParser
 //
-//  Created by Joshua Greene on 4/2/14.
+//  Created by Joshua Greene on 5/25/14.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,18 +25,27 @@
 #import <CoreGraphics/CoreGraphics.h>
 
 /**
- *  `RSSMediaItem` corresponds to either `media:content` or `media:thumbnail` element within an RSS `item` or `entry` element.
+ *  `RSSMediaThumbnail` corresponds to a single `media:thumbnail` element within an `item` element.
  */
-
-@interface RSSMediaItem : NSObject <NSCoding>
+@interface RSSMediaThumbnail : NSObject <NSCoding>
 
 /**
- *  Corresponds to the `url` attribute of its element.
+ *  This property corresponds to the `url` attribute on a `media:thumbnail` element.
  */
 @property (nonatomic, copy) NSURL *url;
 
 /**
- *  Corresponds to the `height` and `width` attribute of its element.
+ *  The `size.height` corresponds to the `height` attribrute, and the `size.width` corresponds to the `width` attribute on a `media:thumbnail` element.
  */
 @property (nonatomic) CGSize size;
+
+/**
+ *  This property corresponds to the `time` attribute on a `media:thumbnail` element.
+ *
+ *  Per the Media RSS specification, it "specifies the time offset in relation to the media object. Typically this is used when creating multiple keyframes within a single video. The format for this attribute should be in the DSM-CC's Normal Play Time (NTP) as used in RTSP [RFC 2326 3.6 Normal Play Time]"
+ *
+ *  The expected format (in NTP) is `H:M:S.h` or simply `S.h`, where `H` is hours, `M` is minutes, `S` is seconds and `h` is fractions of a second.
+ */
+@property (nonatomic, copy) NSString *timeOffset;
+
 @end

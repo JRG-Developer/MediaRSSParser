@@ -33,6 +33,9 @@ const char RSSParserFailBlockKey;
 @implementation RSSParserTests
 {
   Test_RSSParser *sut;
+
+  NSDateFormatter *dateFormatter;
+  RSSChannel *testChannel;
 }
 
 #pragma mark - Test Lifecycle
@@ -77,6 +80,22 @@ const char RSSParserFailBlockKey;
   return mockXMLParser;
 }
 
+#pragma mark - Data
+
+- (NSString *)fileURLPathForRSS2Example
+{
+  NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+  NSURL *url = [bundle URLForResource:@"RSS_2_Example" withExtension:@"xml"];
+  return [url absoluteString];
+}
+
+- (NSString *)fileURLPathForMediaRSSExample
+{
+  NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+  NSURL *url = [bundle URLForResource:@"Media_RSS_Example" withExtension:@"xml"];
+  return [url absoluteString];
+}
+
 #pragma mark - Verify
 
 - (void)verifySuccessBlockSetAsNil
@@ -87,6 +106,14 @@ const char RSSParserFailBlockKey;
 - (void)verifyFailBlockSetAsNil
 {
   [verify(sut.parserCopyMock) setFailblock:nil];
+}
+
+#pragma mark - Utilities
+
+- (void)setUpDateFormatter
+{
+  dateFormatter = [[NSDateFormatter alloc] init];
+  [dateFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss Z"];
 }
 
 #pragma mark - Init - Tests
@@ -212,7 +239,7 @@ const char RSSParserFailBlockKey;
 - (void)test___parseRSSFeed_paramemters_success_failure___sets_success_block
 {
   // given
-  void (^success)(NSArray *) = ^(NSArray *feeditems) { };
+  void (^success)(RSSChannel *) = ^(RSSChannel *channel) { };
   
   // when
   [sut parseRSSFeed:@"" parameters:nil success:success failure:nil];
@@ -356,5 +383,313 @@ const char RSSParserFailBlockKey;
   assertThat(sut.items, notNilValue());
   assertThatInt(sut.items.count, equalToInt(0));
 }
+
+#pragma mark - Parsing - RSS 2.0
+
+- (void)test__parseRSSFeed_paramemters_success_failure___correctly_parses_RSS_2
+{
+  [self beginAsynchronousOperation];
+  
+  [sut parseRSSFeed:[self fileURLPathForRSS2Example] parameters:nil success:^(RSSChannel *channel) {
+
+    [self endAsynchronousOperation];
+    
+    testChannel = channel;
+    [self verifyRSS2];
+    
+  } failure:^(NSError *error) {
+    XCTAssertTrue(NO, @"Error:%@", error);
+    [self endAsynchronousOperation];
+    
+  }];
+  
+  [self waitForAsyncronousOperation];
+}
+
+- (void)verifyRSS2
+{
+  [self setUpDateFormatter];
+  [self verifyRSS2_channelProperties];
+  [self verifyRSS2_Empty_Item1];
+  [self verifyRSS2_Item2];
+  [self verifyRSS2_Item3];
+}
+
+- (void)verifyRSS2_channelProperties
+{
+  assertThat(testChannel.title, equalTo(@"RSS 2.0 Example"));
+  assertThat([testChannel.link absoluteString], equalTo(@"http://www.example.com"));
+  assertThat(testChannel.channelDescription, equalTo(@"RSS 2.0 Example XML"));
+  assertThat(testChannel.language, equalTo(@"en-us"));
+  assertThat(testChannel.copyright, equalTo(@"Copyright 2014 Example, Inc."));
+  assertThat(testChannel.managingEditorEmail, equalTo(@"editor@example.com"));
+  assertThat(testChannel.webMasterEmail, equalTo(@"webmaster@example.com"));
+  assertThat(testChannel.pubDate, equalTo([dateFormatter dateFromString:@"Tue, 10 Jun 2003 11:00:00 GMT"]));
+  assertThat(testChannel.lastBuildDate, equalTo([dateFormatter dateFromString:@"Tue, 10 Jun 2003 12:00:00 GMT"]));
+  assertThat(testChannel.generator, equalTo(@"Example Editor 2.0"));
+  assertThat([testChannel.docsURL absoluteString], equalTo(@"http://blogs.law.harvard.edu/tech/rss"));
+  assertThatInt(testChannel.ttl, equalToInt(60));
+
+  assertThatInt(testChannel.items.count, equalToInt(3));
+}
+
+- (void)verifyRSS2_Empty_Item1
+{
+  RSSItem *item1 = testChannel.items[0];
+  assertThat(item1.title, nilValue());
+  assertThat(item1.link, nilValue());
+  assertThat(item1.itemDescription, nilValue());
+  assertThat(item1.authorEmail, nilValue());
+  assertThat(item1.commentsURL, nilValue());
+  assertThat(item1.guid, nilValue());
+  assertThat(item1.pubDate, nilValue());
+}
+
+- (void)verifyRSS2_Item2
+{
+  RSSItem *item2 = testChannel.items[1];
+  assertThat(item2.title, equalTo(@"Item 2 Title"));
+  assertThat([item2.link absoluteString], equalTo(@"http://www.example.com/item2"));
+  assertThat(item2.itemDescription, equalTo(@"Item 2 Description"));
+  assertThat(item2.authorEmail, equalTo(@"author2@example.com"));
+  assertThat([item2.commentsURL absoluteString], equalTo(@"http://www.example.com/item2/comments"));
+  assertThat(item2.guid, equalTo(@"Item#0002"));
+  assertThat(item2.pubDate, equalTo([dateFormatter dateFromString:@"Tue, 10 Jun 2003 02:00:00 GMT"]));
+}
+
+- (void)verifyRSS2_Item3
+{
+  RSSItem *item3 = testChannel.items[2];
+  assertThat(item3.title, equalTo(@"Item 3 Title"));
+  assertThat([item3.link absoluteString], equalTo(@"http://www.example.com/item3"));
+  assertThat(item3.itemDescription, equalTo(@"Item 3 Description"));
+  assertThat(item3.authorEmail, equalTo(@"author3@example.com"));
+  assertThat([item3.commentsURL absoluteString], equalTo(@"http://www.example.com/item3/comments"));
+  assertThat(item3.guid, equalTo(@"Item#0003"));
+  assertThat(item3.pubDate, equalTo([dateFormatter dateFromString:@"Tue, 10 Jun 2003 03:00:00 GMT"]));
+}
+
+#pragma mark - Parsing - Media RSS 1.5.1
+
+- (void)test__parseRSSFeed_paramemters_success_failure___correctly_parses_Media_RSS
+{
+  [self beginAsynchronousOperation];
+  
+  [sut parseRSSFeed:[self fileURLPathForMediaRSSExample] parameters:nil success:^(RSSChannel *channel) {
+    
+    testChannel = channel;
+    [self verifyMediaRSS];
+    
+    [self endAsynchronousOperation];
+    
+  } failure:^(NSError *error) {
+    XCTAssertTrue(NO, @"Error:%@", error);
+
+    [self endAsynchronousOperation];
+  }];
+  
+  [self waitForAsyncronousOperation];
+}
+
+- (void)verifyMediaRSS
+{
+  [self setUpDateFormatter];
+  
+  [self verifyMediaRSS_channelProperties];
+  [self verifyMediaRSS_Item1];
+  [self verifyMediaRSS_Item2];
+}
+
+- (void)verifyMediaRSS_channelProperties
+{
+  assertThat(testChannel.title, equalTo(@"Media RSS Example"));
+  assertThat([testChannel.link absoluteString], equalTo(@"http://www.media.example.com"));
+  assertThat(testChannel.channelDescription, equalTo(@"Media RSS Example XML"));
+  assertThat(testChannel.language, equalTo(@"en-us"));
+  assertThat(testChannel.copyright, equalTo(@"Copyright 2014 Media Example, Inc."));
+  assertThat(testChannel.managingEditorEmail, equalTo(@"media.editor@example.com"));
+  assertThat(testChannel.webMasterEmail, equalTo(@"media.webmaster@example.com"));
+  assertThat(testChannel.pubDate, equalTo([dateFormatter dateFromString:@"Tue, 10 Jun 2003 02:00:00 GMT"]));
+  assertThat(testChannel.lastBuildDate, equalTo([dateFormatter dateFromString:@"Tue, 10 Jun 2003 03:00:00 GMT"]));
+  assertThat(testChannel.generator, equalTo(@"Media Example Editor 2.0"));
+  assertThat([testChannel.docsURL absoluteString], equalTo(@"http://blogs.law.harvard.edu/tech/rss"));
+  assertThatInt(testChannel.ttl, equalToInt(45));
+  
+  assertThatInt(testChannel.items.count, equalToInt(2));
+}
+
+- (void)verifyMediaRSS_Item1
+{
+  [self verifyMediaRSS_Item1_Properties];
+
+  [self verifyMediaRSS_Item1_Empty_MediaContent1];
+  [self verifyMediaRSS_Item1_MediaContent2];
+  
+  [self verifyMediaRSS_Item1_Empty_MediaThumbnail1];
+  [self verifyMediaRSS_Item1_MediaThumbnail2];
+  
+  [self verifyMediaRSS_Item1_Empty_MediaCredit1];
+  [self verifyMediaRSS_Item1_MediaCredit2];
+}
+
+- (void)verifyMediaRSS_Item1_Properties
+{
+  RSSItem *item1 = testChannel.items[0];
+  
+  assertThat(item1.title, equalTo(@"Media Item 1 Title"));
+  assertThat([item1.link absoluteString], equalTo(@"http://www.example.com/media-item1"));
+  assertThat(item1.itemDescription, equalTo(@"Media Item 1 Description"));
+  assertThat(item1.authorEmail, equalTo(@"media.author1@example.com"));
+  assertThat([item1.commentsURL absoluteString], equalTo(@"http://www.example.com/media-item1/comments"));
+  assertThat(item1.guid, equalTo(@"Media-Item#0001"));
+  assertThat(item1.pubDate, equalTo([dateFormatter dateFromString:@"Tue, 10 Jun 2003 01:00:00 GMT"]));
+  
+  assertThat(item1.mediaTitle, equalTo(@"Media Title 1"));
+  assertThat(item1.mediaDescription, equalTo(@"Media Description 1"));
+  assertThat(item1.mediaText, equalTo(@"Media Text 1"));
+  
+  assertThatInt(item1.mediaContents.count, equalToInt(2));
+  assertThatInt(item1.mediaThumbnails.count, equalToInt(2));
+  assertThatInt(item1.mediaCredits.count, equalToInt(2));
+}
+
+- (void)verifyMediaRSS_Item1_Empty_MediaContent1
+{
+  RSSItem *item1 = testChannel.items[0];
+  
+  RSSMediaContent *mediaContent = item1.mediaContents[0];
+  assertThat(mediaContent.url, nilValue());
+  assertThatInt(mediaContent.fileSize, equalToInt(0));
+  assertThat(mediaContent.type, nilValue());
+  assertThat(mediaContent.medium, nilValue());
+  assertThatBool(mediaContent.isDefault, equalToBool(NO));
+  assertThat(mediaContent.expression, nilValue());
+  assertThatInt(mediaContent.bitrate, equalToInt(0));
+  assertThatInt(mediaContent.framerate, equalToInt(0));
+  assertThatFloat(mediaContent.samplingRate, equalToFloat(0.0f));
+  assertThatInt(mediaContent.channels, equalToInt(0));
+  assertThatInt(mediaContent.duration, equalToInt(0));
+  assertThatFloat(mediaContent.size.height, equalToFloat(0.0f));
+  assertThatFloat(mediaContent.size.width, equalToFloat(0.0f));
+  assertThat(mediaContent.language, nilValue());
+}
+
+- (void)verifyMediaRSS_Item1_MediaContent2
+{
+  RSSItem *item1 = testChannel.items[0];
+  
+  RSSMediaContent *mediaContent = item1.mediaContents[1];
+  assertThat([mediaContent.url absoluteString], equalTo(@"http://www.example.com/movie1.mov"));
+  assertThatInt(mediaContent.fileSize, equalToInt(12216320));
+  assertThat(mediaContent.type, equalTo(@"video/quicktime"));
+  assertThat(mediaContent.medium, equalTo(@"video"));
+  assertThatBool(mediaContent.isDefault, equalToBool(YES));
+  assertThat(mediaContent.expression, equalTo(@"full"));
+  assertThatInt(mediaContent.bitrate, equalToInt(128));
+  assertThatInt(mediaContent.framerate, equalToInt(25));
+  assertThatFloat(mediaContent.samplingRate, equalToFloat(44.1f));
+  assertThatInt(mediaContent.channels, equalToInt(2));
+  assertThatInt(mediaContent.duration, equalToInt(185));
+  assertThatFloat(mediaContent.size.height, equalToFloat(200.0f));
+  assertThatFloat(mediaContent.size.width, equalToFloat(300.0f));
+  assertThat(mediaContent.language, equalTo(@"en"));
+}
+
+- (void)verifyMediaRSS_Item1_Empty_MediaThumbnail1
+{
+  RSSItem *item1 = testChannel.items[0];
+
+  RSSMediaThumbnail *thumb1 = item1.mediaThumbnails[0];
+  assertThat(thumb1.url, nilValue());
+  assertThatFloat(thumb1.size.height, equalToFloat(0));
+  assertThatFloat(thumb1.size.width, equalToFloat(0));
+  assertThat(thumb1.timeOffset, nilValue());
+}
+
+- (void)verifyMediaRSS_Item1_MediaThumbnail2
+{
+  RSSItem *item1 = testChannel.items[0];
+  
+  RSSMediaThumbnail *thumb2 = item1.mediaThumbnails[1];
+  assertThat([thumb2.url absoluteString], equalTo(@"http://www.example.com/thumbnails/movie1-01"));
+  assertThatFloat(thumb2.size.height, equalToFloat(50));
+  assertThatFloat(thumb2.size.width, equalToFloat(75));
+  assertThat(thumb2.timeOffset, equalTo(@"0:0:22.0"));
+}
+
+- (void)verifyMediaRSS_Item1_Empty_MediaCredit1
+{
+  RSSItem *item1 = testChannel.items[0];
+  
+  RSSMediaCredit *credit1 = item1.mediaCredits[0];
+  assertThat(credit1.role, nilValue());
+  assertThat(credit1.value, nilValue());
+}
+
+- (void)verifyMediaRSS_Item1_MediaCredit2
+{
+  RSSItem *item1 = testChannel.items[0];
+  
+  RSSMediaCredit *credit2 = item1.mediaCredits[1];
+  assertThat(credit2.role, equalTo(@"co-artist"));
+  assertThat(credit2.value, equalTo(@"Bob Artist"));
+}
+
+- (void)verifyMediaRSS_Item2
+{
+  [self verifyMediaRSS_Item2_Properties];
+  [self verifyMediaRSS_Item2_Empty_MediaContent1];
+  [self verifyMediaRSS_Item2_Minimum_Values_MediaContent2];
+}
+
+- (void)verifyMediaRSS_Item2_Properties
+{
+  RSSItem *item2 = testChannel.items[1];
+  assertThat(item2.title, equalTo(@"Media Item 2 Title"));
+  assertThat([item2.link absoluteString], equalTo(@"http://www.example.com/media-item2"));
+  assertThat(item2.itemDescription, equalTo(@"Media Item 2 Description"));
+  assertThat(item2.authorEmail, equalTo(@"media.author2@example.com"));
+  assertThat([item2.commentsURL absoluteString], equalTo(@"http://www.example.com/media-item2/comments"));
+  assertThat(item2.guid, equalTo(@"Media-Item#0002"));
+  assertThat(item2.pubDate, equalTo([dateFormatter dateFromString:@"Tue, 10 Jun 2003 02:00:00 GMT"]));
+  assertThatInt(item2.mediaContents.count, equalToInt(2));
+  
+  assertThat(item2.mediaTitle, equalTo(@"Media Title 2"));
+  assertThat(item2.mediaDescription, equalTo(@"Media Description 2"));
+  assertThat(item2.mediaText, equalTo(@"Media Text 2"));
+  
+  assertThatInt(item2.mediaContents.count, equalToInt(2));
+}
+
+- (void)verifyMediaRSS_Item2_Empty_MediaContent1
+{
+  RSSItem *item2 = testChannel.items[1];
+  
+  RSSMediaContent *mediaContent1 = item2.mediaContents[0];
+  assertThat([mediaContent1.url absoluteString], nilValue());
+  assertThatFloat(mediaContent1.size.height, equalToFloat(0.0f));
+  assertThatFloat(mediaContent1.size.width, equalToFloat(0.0f));
+  assertThatInt(mediaContent1.fileSize, equalToInt(0));
+  assertThat(mediaContent1.type, nilValue());
+  assertThat(mediaContent1.medium, nilValue());
+  assertThatBool(mediaContent1.isDefault, equalToBool(NO));
+  assertThat(mediaContent1.expression, nilValue());
+  assertThatInt(mediaContent1.bitrate, equalToInt(0));
+  assertThatInt(mediaContent1.framerate, equalToInt(0));
+  assertThatFloat(mediaContent1.samplingRate, equalToFloat(0.0f));
+  assertThatInt(mediaContent1.channels, equalToInt(0));
+  assertThatInt(mediaContent1.duration, equalToInt(0));
+  assertThat(mediaContent1.language, nilValue());
+}
+
+- (void)verifyMediaRSS_Item2_Minimum_Values_MediaContent2
+{
+  RSSItem *item2 = testChannel.items[1];
+  RSSMediaContent *mediaContent2 = item2.mediaContents[1];
+  assertThat([mediaContent2.url absoluteString], equalTo(@"http://www.example.com/image.jpg"));
+  assertThatFloat(mediaContent2.size.height, equalToFloat(1000.0f));
+  assertThatFloat(mediaContent2.size.width, equalToFloat(1500.0f));
+}
+
 
 @end

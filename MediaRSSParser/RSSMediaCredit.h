@@ -25,18 +25,19 @@
 #import <Foundation/Foundation.h>
 
 /**
- *  `RSSMediaCredit` corresponds to a single `media:credit` element within an RSS `item` or `entry` element.
+ *  `RSSMediaCredit` corresponds to a single `media:credit` element within an `item` or `entry` element.
  */
-
 @interface RSSMediaCredit : NSObject <NSCoding>
 
 /**
- *  Corresponds to `role` attribute on the `media:credit` element.
+ *  This property corresponds to `role` attribute on the `media:credit` element.
+ *
+ *  Per the Media RSS specification, it "specifies the role the entity played."
  */
 @property (nonatomic, copy) NSString *role;
 
 /**
- *  Corresponds to the value of the `media:credit` element.
+ *  This property corresponds to the value of the `media:credit` element.
  */
 @property (nonatomic, copy) NSString *value;
 @end

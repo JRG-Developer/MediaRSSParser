@@ -32,8 +32,7 @@
 {
   if (self = [super init]) {
     _role = [aDecoder decodeObjectForKey:@"role"];
-    _value = [aDecoder decodeObjectForKey:@"value"];
-    
+    _value = [aDecoder decodeObjectForKey:@"value"];    
   }
   
   return self;

@@ -28,4 +28,9 @@
 
 @interface RSSTestCase : XCTestCase
 + (void)swapInstanceMethodsForClass:(Class)cls selector:(SEL)sel1 andSelector:(SEL)sel2;
+
+- (void)beginAsynchronousOperation;
+- (void)waitForAsyncronousOperation;
+- (void)endAsynchronousOperation;
+
 @end

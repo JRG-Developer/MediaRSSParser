@@ -3,7 +3,6 @@
 //  MediaRSSParser
 //
 //  Created by Joshua Greene on 5/19/14.
-//  Copyright (c) 2014 App-Order, LLC. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +24,12 @@
 
 #import "RSSParser.h"
 
+#import "RSSChannel.h"
 #import "RSSItem.h"
+
+#import "RSSMediaContent.h"
+#import "RSSMediaThumbnail.h"
 #import "RSSMediaCredit.h"
-#import "RSSMediaItem.h"
 
 /**
  *  `RSSParser_Protected` contains internal properties used by `RSSParser` that should not be used by other
@@ -54,7 +56,7 @@
 /**
  *  This is a copy of the `successBlock` passed to the parser, called only on successful parse completion.
  */
-@property (nonatomic, copy) void (^successBlock)(NSArray *feedItems);
+@property (nonatomic, copy) void (^successBlock)(RSSChannel *channel);
 
 /**
  *  This is a copy of the `failBlock` passed on to the parser, called if either a network or parse error occurs.
@@ -66,9 +68,25 @@
 ///---------------------
 
 /**
+ *  The `RSSChannel` object that is being parsed. Per RSS 2.0 specification (see http://cyber.law.harvard.edu/rss/rss.html), an RSS feed should contain a single `channel` element only.
+ */
+
+@property (nonatomic, strong) RSSChannel *channel;
+
+/**
  *  The current `RSSItem` object that is being parsed.
  */
 @property (nonatomic, strong) RSSItem *currentItem;
+
+/**
+ *  The array of `RSSItem` objects that have already been parsed
+ */
+@property (nonatomic, strong) NSMutableArray *items;
+
+/**
+ *  The current array of media contents that is being parsed, ultimately set as `mediaContents` on `currentItem`
+ */
+@property (nonatomic, strong) NSMutableArray *mediaContents;
 
 /**
  *  The current array of media credits that is being parsed, ultimately set as `mediaCredits` on `currentItem`
@@ -81,19 +99,9 @@
 @property (nonatomic, strong) NSMutableArray *mediaThumbnails;
 
 /**
- *  The current array of media contents that is being parsed, ultimately set as `mediaContents` on `currentItem`
- */
-@property (nonatomic, strong) NSMutableArray *mediaContents;
-
-/**
- *  The array of `RSSItem` objects that have already been parsed
- */
-@property (nonatomic, strong) NSMutableArray *items;
-
-/**
  *  The temporary, builder string that characters are added to as the parser encounters them.
  */
-@property (nonatomic, strong) NSMutableString *tmpString;
+@property (nonatomic, strong) NSMutableString *tempString;
 
 /**
  *  This method is called on successful GET response. This method is exposed only for testing purposes.

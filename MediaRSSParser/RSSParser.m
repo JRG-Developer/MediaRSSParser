@@ -2,7 +2,7 @@
 //  RSSParser.m
 //  RSSParser
 //
-//  Modified by Joshua Greene on 4/2/14 (added support for Media RSS).
+//  Modified by Joshua Greene on 4/2/14.
 //  Created by Thibaut LE LEVIER on 1/31/12.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,14 +29,19 @@
 #import "AFURLResponseSerialization.h"
 #import "AFHTTPSessionManager.h"
 
+@interface RSSParser()
+@property (nonatomic, strong, readwrite) NSDateFormatter *dateFormatter;
+@end
+
 @implementation RSSParser
 
 #pragma mark - Object Lifecycle
 
 - (instancetype)init {
   self = [super init];
-  if (self) {    
+  if (self) {
     [self setUpClient];
+    [self setUpDateFormatter];
   }
   return self;
 }
@@ -51,6 +56,12 @@
                                                         @"application/rss+xml",
                                                         @"application/atom+xml",
                                                         nil];
+}
+
+- (void)setUpDateFormatter
+{
+  self.dateFormatter = [[NSDateFormatter alloc] init];
+  [self.dateFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss Z"];
 }
 
 #pragma mark - Cancel
@@ -75,11 +86,11 @@
   [self setFailblock:nil];
 }
 
-#pragma mark - Parse
+#pragma mark - Starting Parser
 
 + (RSSParser *)parseRSSFeed:(NSString *)urlString
                  parameters:(NSDictionary *)parameters
-                    success:(void (^)(NSArray *feedItems))success
+                    success:(void (^)(RSSChannel *channel))success
                     failure:(void (^)(NSError *error))failure
 {
   RSSParser *parser = [[RSSParser alloc] init];
@@ -89,7 +100,7 @@
 
 - (void)parseRSSFeed:(NSString *)urlString
           parameters:(NSDictionary *)parameters
-             success:(void (^)(NSArray *feedItems))success
+             success:(void (^)(RSSChannel *channel))success
              failure:(void (^)(NSError *error))failure
 {
   [self cancel];
@@ -116,27 +127,7 @@
   [self.xmlParser parse];
 }
 
-#pragma mark - NSXMLParserDelegate
-
-- (void)parserDidStartDocument:(NSXMLParser *)parser
-{
-  self.items = [[NSMutableArray alloc] init];
-}
-
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
-{
-  [self.tmpString appendString:string];
-}
-
-- (void)parserDidEndDocument:(NSXMLParser *)parser
-{
-  if (self.successBlock) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      self.successBlock(self.items);
-      [self nilSuccessAndFailureBlocks];
-    });
-  }
-}
+#pragma mark - NSXMLParserDelegate - Error Handling
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
 {
@@ -149,7 +140,56 @@
   [self nilSuccessAndFailureBlocks];
 }
 
-#pragma mark - NSXMLParserDelegate - didStartElement
+#pragma mark - NSXMLParserDelegate - Document Start
+
+- (void)parserDidStartDocument:(NSXMLParser *)parser
+{
+  self.channel = [[RSSChannel alloc] init];
+  self.items = [[NSMutableArray alloc] init];
+}
+
+#pragma mark - NSXMLParserDelegate - Found Characters
+
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
+{
+  [self.tempString appendString:string];
+}
+
+#pragma mark - NSXMLParserDelegate - Document End
+
+- (void)parserDidEndDocument:(NSXMLParser *)parser
+{
+  [self setChannelProperties];
+  [self nilTemporaryProperties];
+  [self dispatchSuccess];
+}
+
+- (void)setChannelProperties
+{
+  self.channel.items = self.items;
+}
+
+- (void)nilTemporaryProperties
+{
+  self.currentItem = nil;
+  self.mediaCredits = nil;
+  self.mediaContents = nil;
+  self.mediaThumbnails = nil;
+  self.items = nil;
+  self.tempString = nil;
+}
+
+- (void)dispatchSuccess
+{
+  if (self.successBlock) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      self.successBlock(self.channel);
+      [self nilSuccessAndFailureBlocks];
+    });
+  }
+}
+
+#pragma mark - NSXMLParserDelegate - Element Start
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName
   namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName
@@ -158,27 +198,52 @@
   if ([self matchesItemElement:elementName]) {
     [self startNewItem];
     
-  } else if ([self matchesMediaCreditElement:elementName]) {
-    [self addMediaCreditFromAttributes:attributeDict];
+  } else if ([self matchesMediaContentElement:elementName]) {
+    [self addMediaContentFromAttributes:attributeDict];
     
   } else if ([self matchesMediaThumbnailElement:elementName]) {
     [self addMediaThumbnailFromAttributes:attributeDict];
     
-  } else if ([self matchesMediaContentElement:elementName]) {
-    [self addMediaContentFromAttributes:attributeDict];
+  } else if ([self matchesMediaCreditElement:elementName]) {
+    [self addMediaCreditFromAttributes:attributeDict];
     
   }
   
-  self.tmpString = [[NSMutableString alloc] init];
+  self.tempString = [[NSMutableString alloc] init];
 }
 
 - (void)startNewItem
 {
   self.currentItem = [[RSSItem alloc] init];
-  self.mediaCredits = [[NSMutableArray alloc] init];
-  self.mediaThumbnails = [[NSMutableArray alloc] init];
+  
   self.mediaContents = [[NSMutableArray alloc] init];
+  self.mediaThumbnails = [[NSMutableArray alloc] init];
+  self.mediaCredits = [[NSMutableArray alloc] init];
 }
+
+#pragma mark - Start Matchers
+
+- (BOOL)matchesItemElement:(NSString *)elementName
+{
+  return [elementName isEqualToString:@"item"] || [elementName isEqualToString:@"entry"];
+}
+
+- (BOOL)matchesMediaContentElement:(NSString *)elementName
+{
+  return [elementName isEqualToString:@"media:content"];
+}
+
+- (BOOL)matchesMediaThumbnailElement:(NSString *)elementName
+{
+  return [elementName isEqualToString:@"media:thumbnail"];
+}
+
+- (BOOL)matchesMediaCreditElement:(NSString *)elementName
+{
+  return [elementName isEqual:@"media:credit"];
+}
+
+#pragma mark - Add Media Credit
 
 - (void)addMediaCreditFromAttributes:(NSDictionary *)attributes
 {
@@ -193,49 +258,51 @@
   return mediaCredit;
 }
 
+#pragma mark - Add Media Thumbnail
+
 - (void)addMediaThumbnailFromAttributes:(NSDictionary *)attributes
 {
-  RSSMediaItem *mediaItem = [self mediaItemFromAttributes:attributes];
+  RSSMediaThumbnail *mediaItem = [self mediaThumbnailFromAttributes:attributes];
   [self.mediaThumbnails addObject:mediaItem];
 }
 
-- (void)addMediaContentFromAttributes:(NSDictionary *)attributes
+- (RSSMediaThumbnail *)mediaThumbnailFromAttributes:(NSDictionary *)attributes
 {
-  RSSMediaItem *mediaItem = [self mediaItemFromAttributes:attributes];
-  [self.mediaContents addObject:mediaItem];
-}
-
-- (RSSMediaItem *)mediaItemFromAttributes:(NSDictionary *)attributes
-{
-  RSSMediaItem *mediaThumbnail = [[RSSMediaItem alloc] init];
+  RSSMediaThumbnail *mediaThumbnail = [[RSSMediaThumbnail alloc] init];
   mediaThumbnail.url = [NSURL URLWithString:attributes[@"url"]];
-  mediaThumbnail.size = CGSizeMake([attributes[@"height"] floatValue], [attributes[@"width"] floatValue]);
+  mediaThumbnail.size = CGSizeMake([attributes[@"width"] floatValue], [attributes[@"height"] floatValue]);
+  mediaThumbnail.timeOffset = attributes[@"time"];
   return mediaThumbnail;
 }
 
-#pragma mark - Start Matchers
+#pragma mark - Add Media Content
 
-- (BOOL)matchesItemElement:(NSString *)elementName
+- (void)addMediaContentFromAttributes:(NSDictionary *)attributes
 {
-  return [elementName isEqualToString:@"item"] || [elementName isEqualToString:@"entry"];
+  RSSMediaContent *mediaItem = [self mediaContentFromAttributes:attributes];
+  [self.mediaContents addObject:mediaItem];
 }
 
-- (BOOL)matchesMediaCreditElement:(NSString *)elementName
+- (RSSMediaContent *)mediaContentFromAttributes:(NSDictionary *)attributes
 {
-  return [elementName isEqual:@"media:credit"];
+  RSSMediaContent *mediaContent = [[RSSMediaContent alloc] init];
+  mediaContent.fileSize = [attributes[@"fileSize"] integerValue];
+  mediaContent.type = attributes[@"type"];
+  mediaContent.medium = attributes[@"medium"];
+  mediaContent.isDefault = [attributes[@"isDefault"] boolValue];
+  mediaContent.expression = attributes[@"expression"];
+  mediaContent.bitrate = [attributes[@"bitrate"] integerValue];
+  mediaContent.framerate = [attributes[@"framerate"] integerValue];
+  mediaContent.samplingRate = [attributes[@"samplingrate"] floatValue];
+  mediaContent.channels = [attributes[@"channels"] integerValue];
+  mediaContent.duration = [attributes[@"duration"] integerValue];
+  mediaContent.url = [NSURL URLWithString:attributes[@"url"]];
+  mediaContent.size = CGSizeMake([attributes[@"width"] floatValue], [attributes[@"height"] floatValue]);
+  mediaContent.language = attributes[@"lang"];
+  return mediaContent;
 }
 
-- (BOOL)matchesMediaThumbnailElement:(NSString *)elementName
-{
-  return [elementName isEqualToString:@"media:thumbnail"];
-}
-
-- (BOOL)matchesMediaContentElement:(NSString *)elementName
-{
-  return [elementName isEqualToString:@"media:content"];
-}
-
-#pragma mark - NSXMLParserDelegate - didEndElement
+#pragma mark - NSXMLParserDelegate - Element End
 
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName
   namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
@@ -243,74 +310,126 @@
   if ([self matchesItemElement:elementName]) {
     [self endCurrentItem];
     
-  } else if (self.currentItem != nil && self.tmpString != nil) {
+  } else if ([self hasTempString] == NO) {
+    return;
+    
+  } else if ([self hasCurrentItem] == NO) {
     
     if ([self matchesTitleElement:elementName]) {
-      [self.currentItem setTitle:self.tmpString];
-      
-    } else if ([self matchesItemDescriptionElement:elementName]) {
-      [self.currentItem setItemDescription:self.tmpString];
-      
-    } else if ([self matchesContentElement:elementName]) {
-      [self.currentItem setContent:self.tmpString];
+      [self.channel setTitle:self.tempString];
       
     } else if ([self matchesLinkElement:elementName]) {
-      [self.currentItem setLink:[NSURL URLWithString:self.tmpString]];
+      [self.channel setLink:[self urlFromTempString]];
       
-    } else if ([self matchesCommentsLinkElement:elementName]) {
-      [self.currentItem setCommentsLink:[NSURL URLWithString:self.tmpString]];
+    } else if ([self matchesDescriptionElement:elementName]) {
+      [self.channel setChannelDescription:self.tempString];
       
-    } else if ([self matchesCommentsFeedElement:elementName]) {
-      [self.currentItem setCommentsFeed:[NSURL URLWithString:self.tmpString]];
+    } else if ([self matchesLanguageElement:elementName]) {
+      [self.channel setLanguage:self.tempString];
       
-    } else if ([self matchesCommentsCountElement:elementName]) {
-      [self.currentItem setCommentsCount:[NSNumber numberWithInt:[self.tmpString intValue]]];
+    } else if ([self matchesCopyrightElement:elementName]) {
+      [self.channel setCopyright:self.tempString];
+      
+    } else if ([self matchesManagingEditorElement:elementName]) {
+      [self.channel setManagingEditorEmail:self.tempString];
+      
+    } else if ([self matchesWebMasterElement:elementName]) {
+      [self.channel setWebMasterEmail:self.tempString];
       
     } else if ([self matchesPubDateElement:elementName]) {
-      [self setPubDate];
+      [self.channel setPubDate:[self dateFromTempString]];
+      
+    } else if ([self matchesLastBuildDate:elementName]) {
+      [self.channel setLastBuildDate:[self dateFromTempString]];
+      
+    } else if ([self matchesGeneratorElement:elementName]) {
+      [self.channel setGenerator:self.tempString];
+      
+    } else if ([self matchesDocsElement:elementName]) {
+      [self.channel setDocsURL:[self urlFromTempString]];
+      
+    } else if ([self matchesTTLElement:elementName]) {
+      [self.channel setTtl:[self integerFromTempString]];
+      
+    }
+    
+  } else {
+    
+    if ([self matchesTitleElement:elementName]) {
+      [self.currentItem setTitle:self.tempString];
+      
+    } else if ([self matchesLinkElement:elementName]) {
+      [self.currentItem setLink:[self urlFromTempString]];
+      
+    } else if ([self matchesDescriptionElement:elementName]) {
+      [self.currentItem setItemDescription:self.tempString];
       
     } else if ([self matchesAuthorElement:elementName]) {
-      [self.currentItem setAuthor:self.tmpString];
+      [self.currentItem setAuthorEmail:self.tempString];
+      
+    } else if ([self matchesCommentsElement:elementName]) {
+      [self.currentItem setCommentsURL:[self urlFromTempString]];
       
     } else if ([self matchesGuidElement:elementName]) {
-      [self.currentItem setGuid:self.tmpString];
+      [self.currentItem setGuid:self.tempString];
+      
+    } else if ([self matchesPubDateElement:elementName]) {
+      self.currentItem.pubDate = [self dateFromTempString];
       
     } else if ([self matchesMediaTitleElement:elementName]) {
-      [self.currentItem setMediaTitle:self.tmpString];
+      [self.currentItem setMediaTitle:self.tempString];
       
     } else if ([self matchesMediaDescriptionElement:elementName]) {
-      [self.currentItem setMediaDescription:self.tmpString];
-      
-    } else if ([self matchesMediaTextElement:elementName]) {
-      [self.currentItem setMediaText:self.tmpString];
+      [self.currentItem setMediaDescription:self.tempString];
       
     } else if ([self matchesMediaCreditElement:elementName]) {
       [self setMediaCreditValue];
+      
+    } else if ([self matchesMediaTextElement:elementName]) {
+      [self.currentItem setMediaText:self.tempString];
       
     }
   }
 }
 
+- (BOOL)hasTempString
+{
+  return self.tempString.length > 0;
+}
+
+- (BOOL)hasCurrentItem
+{
+  return self.currentItem != nil;
+}
+
 - (void)endCurrentItem
 {
-  self.currentItem.mediaCredits = [self.mediaCredits copy];
-  self.currentItem.mediaThumbnails = [self.mediaThumbnails copy];
-  self.currentItem.mediaContents = [self.mediaContents copy];
+  self.currentItem.mediaContents = self.mediaContents;
+  self.currentItem.mediaThumbnails = self.mediaThumbnails;
+  self.currentItem.mediaCredits = self.mediaCredits;
+  
   [self.items addObject:self.currentItem];
 }
 
-- (void)setPubDate
+- (NSURL *)urlFromTempString
 {
-  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  [formatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss Z"];
-  [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_EN"]];
-  [self.currentItem setPubDate:[formatter dateFromString:self.tmpString]];
+  return [NSURL URLWithString:self.tempString];
+}
+
+- (NSDate *)dateFromTempString
+{
+  return [self.dateFormatter dateFromString:self.tempString];
+}
+
+- (NSInteger)integerFromTempString
+{
+  return [self.tempString integerValue];
 }
 
 - (void)setMediaCreditValue
 {
-  RSSMediaCredit *mediaCredit = [self.currentItem.mediaCredits lastObject];
-  [mediaCredit setValue:self.tmpString];
+  RSSMediaCredit *mediaCredit = [self.mediaCredits lastObject];
+  [mediaCredit setValue:self.tempString];
 }
 
 #pragma mark - End Matchers
@@ -320,34 +439,34 @@
   return [elementName isEqualToString:@"title"];
 }
 
-- (BOOL)matchesItemDescriptionElement:(NSString *)elementName
-{
-  return [elementName isEqualToString:@"description"];
-}
-
-- (BOOL)matchesContentElement:(NSString *)elementName
-{
-  return [elementName isEqualToString:@"content:encoded"] || [elementName isEqualToString:@"content"];
-}
-
 - (BOOL)matchesLinkElement:(NSString *)elementName
 {
   return [elementName isEqualToString:@"link"];
 }
 
-- (BOOL)matchesCommentsLinkElement:(NSString *)elementName
+- (BOOL)matchesDescriptionElement:(NSString *)elementName
 {
-  return [elementName isEqualToString:@"comments"];
+  return [elementName isEqualToString:@"description"];
 }
 
-- (BOOL)matchesCommentsFeedElement:(NSString *)elementName
+- (BOOL)matchesLanguageElement:(NSString *)elementName
 {
-  return [elementName isEqualToString:@"wfw:commentRss"];
+  return [elementName isEqualToString:@"language"];
 }
 
-- (BOOL)matchesCommentsCountElement:(NSString *)elementName
+- (BOOL)matchesCopyrightElement:(NSString *)elementName
 {
-  return [elementName isEqualToString:@"slash:comments"];
+  return [elementName isEqualToString:@"copyright"];
+}
+
+- (BOOL)matchesManagingEditorElement:(NSString *)elementName
+{
+  return [elementName isEqualToString:@"managingEditor"];
+}
+
+- (BOOL)matchesWebMasterElement:(NSString *)elementName
+{
+  return [elementName isEqualToString:@"webMaster"];
 }
 
 - (BOOL)matchesPubDateElement:(NSString *)elementName
@@ -355,9 +474,34 @@
   return [elementName isEqualToString:@"pubDate"];
 }
 
+- (BOOL)matchesLastBuildDate:(NSString *)elementName
+{
+  return [elementName isEqualToString:@"lastBuildDate"];
+}
+
+- (BOOL)matchesGeneratorElement:(NSString *)elementName
+{
+  return [elementName isEqualToString:@"generator"];
+}
+
+- (BOOL)matchesDocsElement:(NSString *)elementName
+{
+  return [elementName isEqualToString:@"docs"];
+}
+
+- (BOOL)matchesTTLElement:(NSString *)elementName
+{
+  return [elementName isEqualToString:@"ttl"];
+}
+
 - (BOOL)matchesAuthorElement:(NSString *)elementName
 {
-  return [elementName isEqualToString:@"dc:creator"];
+  return [elementName isEqualToString:@"author"];
+}
+
+- (BOOL)matchesCommentsElement:(NSString *)elementName
+{
+  return [elementName isEqualToString:@"comments"];
 }
 
 - (BOOL)matchesGuidElement:(NSString *)elementName
