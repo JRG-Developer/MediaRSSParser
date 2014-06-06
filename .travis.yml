@@ -1,0 +1,11 @@
+language: objective-c
+before_install:
+    - gem install cocoapods --no-rdoc --no-ri --no-document --quiet
+    - brew update
+    - brew upgrade xctool
+
+before_script:
+    - export LANG=en_US.UTF-8
+
+script:
+    - xctool test -workspace MediaRSSParser.xcworkspace -scheme MediaRSSParserTests -sdk iphonesimulator7.1 ONLY_ACTIVE_ARCH=NO
