@@ -14,7 +14,7 @@
 #import <AFNetworking/AFHTTPSessionManager.h>
 
 // Test Support
-#import "RSSTestCase.h"
+#import <AOTestCase/AOTestCase.h>
 #import "RSSParser+TestMethods.h"
 
 #import <objc/runtime.h>
@@ -27,7 +27,7 @@
 
 const char RSSParserFailBlockKey;
 
-@interface RSSParserTests : RSSTestCase
+@interface RSSParserTests : AOTestCase
 @end
 
 @implementation RSSParserTests
@@ -204,7 +204,7 @@ const char RSSParserFailBlockKey;
   // given
   SEL selector = @selector(parseRSSFeed:parameters:success:failure:);
   SEL testSelector = @selector(test_parseRSSFeed:parameters:success:failure:);
-  [RSSTestCase swapInstanceMethodsForClass:[RSSParser class] selector:selector andSelector:testSelector];
+  [self swapInstanceMethodsForClass:[RSSParser class] selector:selector andSelector:testSelector];
   
   // when
   RSSParser *parser = [RSSParser parseRSSFeed:@"" parameters:nil success:nil failure:nil];
@@ -213,7 +213,7 @@ const char RSSParserFailBlockKey;
   assertThatBool([parser calledParseRSSFeed], equalToBool(YES));
   
   // clean up
-  [RSSTestCase swapInstanceMethodsForClass:[RSSParser class] selector:selector andSelector:testSelector];
+  [self swapInstanceMethodsForClass:[RSSParser class] selector:selector andSelector:testSelector];
 }
 
 #pragma mark - Instance Method - Parse - Tests
@@ -223,7 +223,7 @@ const char RSSParserFailBlockKey;
   // given
   SEL selector = @selector(cancel);
   SEL testSelector = @selector(test_cancel);
-  [RSSTestCase swapInstanceMethodsForClass:[RSSParser class] selector:selector andSelector:testSelector];
+  [self swapInstanceMethodsForClass:[RSSParser class] selector:selector andSelector:testSelector];
   
   // when
   [sut parseRSSFeed:@"" parameters:nil success:nil failure:nil];
@@ -233,7 +233,7 @@ const char RSSParserFailBlockKey;
   
   // clean up
   [sut cancel];
-  [RSSTestCase swapInstanceMethodsForClass:[RSSParser class] selector:selector andSelector:testSelector];
+  [self swapInstanceMethodsForClass:[RSSParser class] selector:selector andSelector:testSelector];
 }
 
 - (void)test___parseRSSFeed_paramemters_success_failure___sets_success_block

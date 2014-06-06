@@ -15,7 +15,6 @@
 		44A30817192FEEAD00D65886 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A30816192FEEAD00D65886 /* NSString+HTML.m */; };
 		44A47EC8192E656C00B0B940 /* RSSParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A47EC7192E656C00B0B940 /* RSSParserTests.m */; };
 		44A47ECE192E65A900B0B940 /* Test_RSSParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A47ECD192E65A900B0B940 /* Test_RSSParser.m */; };
-		44A47ED4192E93DB00B0B940 /* RSSTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A47ED3192E93DB00B0B940 /* RSSTestCase.m */; };
 		44A47ED8192E970500B0B940 /* RSSParser+TestMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A47ED7192E970500B0B940 /* RSSParser+TestMethods.m */; };
 		44F4D6D2192ACC8900B1C78A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44F4D6D1192ACC8900B1C78A /* Foundation.framework */; };
 		44F4D6E0192ACC8900B1C78A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44F4D6DF192ACC8900B1C78A /* XCTest.framework */; };
@@ -65,8 +64,6 @@
 		44A47EC7192E656C00B0B940 /* RSSParserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSParserTests.m; sourceTree = "<group>"; };
 		44A47ECC192E65A900B0B940 /* Test_RSSParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Test_RSSParser.h; sourceTree = "<group>"; };
 		44A47ECD192E65A900B0B940 /* Test_RSSParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test_RSSParser.m; sourceTree = "<group>"; };
-		44A47ED2192E93DB00B0B940 /* RSSTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSTestCase.h; sourceTree = "<group>"; };
-		44A47ED3192E93DB00B0B940 /* RSSTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSTestCase.m; sourceTree = "<group>"; };
 		44A47ED6192E970500B0B940 /* RSSParser+TestMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RSSParser+TestMethods.h"; sourceTree = "<group>"; };
 		44A47ED7192E970500B0B940 /* RSSParser+TestMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RSSParser+TestMethods.m"; sourceTree = "<group>"; };
 		44F4D6CE192ACC8900B1C78A /* libMediaRSSParser.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMediaRSSParser.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,8 +138,6 @@
 		44A47ECA192E659100B0B940 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				44A47ED2192E93DB00B0B940 /* RSSTestCase.h */,
-				44A47ED3192E93DB00B0B940 /* RSSTestCase.m */,
 				44A47ECC192E65A900B0B940 /* Test_RSSParser.h */,
 				44A47ECD192E65A900B0B940 /* Test_RSSParser.m */,
 			);
@@ -437,7 +432,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				44A47EC8192E656C00B0B940 /* RSSParserTests.m in Sources */,
-				44A47ED4192E93DB00B0B940 /* RSSTestCase.m in Sources */,
 				44A47ED8192E970500B0B940 /* RSSParser+TestMethods.m in Sources */,
 				44A47ECE192E65A900B0B940 /* Test_RSSParser.m in Sources */,
 			);
