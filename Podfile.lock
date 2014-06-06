@@ -24,7 +24,7 @@ PODS:
     - OCHamcrest (~> 3.0)
 
 DEPENDENCIES:
-  - AFNetworking (~> 2.2.4)
+  - AFNetworking (~> 2.0)
   - AOTestCase (~> 1.0)
   - OCMockito (~> 1.2.0)
 

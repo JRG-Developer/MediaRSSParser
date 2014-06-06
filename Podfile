@@ -1,7 +1,7 @@
 platform :ios, "7.0"
 
 target "MediaRSSParser" do
-    pod 'AFNetworking', '~> 2.2.4'
+    pod 'AFNetworking', '~> 2.0'
 end
 
 target "MediaRSSParserTests" do
