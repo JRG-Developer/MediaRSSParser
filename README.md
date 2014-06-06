@@ -111,7 +111,7 @@ This means, making it easy for third-party developers to quickly answer question
 
  -- See the extensive reads-like-sentences unit tests for both use examples and in-code documentation on how things are suppose to work.
 
-## Secondary Objectives
+### Secondary Objectives
 1) Document everything (100% documentation for all header files). 
 This goes right along with "making it as easy as possible to use".
 
