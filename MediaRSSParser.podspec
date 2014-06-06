@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "MediaRSSParser"
-  s.version      = "1.0.0"
+  s.version      = "1.0.1"
   s.summary      = "Media RSS parser, built on AFNetworking 2.0."
 
   s.author       = { "Joshua Greene" => "jrg.developer@gmail.com" }
