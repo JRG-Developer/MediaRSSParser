@@ -1,5 +1,7 @@
 # MediaRSSParser
 
+[![Build Status](https://travis-ci.org/JRG-Developer/MediaRSSParser.svg?branch=master)](https://travis-ci.org/JRG-Developer/MediaRSSParser)
+
 `MediaRSSParser` is an easy-to-use parser for Media RSS, built on <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a>.
 
 `MediaRSSParser` was inspired by and initially based on  <a href="https://github.com/tibo/BlockRSSParser">BlockRSSParser</a>. 
