@@ -1,38 +1,62 @@
 # MediaRSSParser
 
-This is a Media RSS Parser, built on <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a>.
+`MediaRSSParser` is an easy-to-use parser for Media RSS, built on <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a>.
 
-`MediaRSSParser` was initially inspired by and based on <a href="https://github.com/tibo/BlockRSSParser">BlockRSSParser</a>.
+`MediaRSSParser` was inspired by and initially based on  <a href="https://github.com/tibo/BlockRSSParser">BlockRSSParser</a>. 
 
-While some similarities still exist, this project has taken a different path from `BlockRSSParser` (for the reasons discussed below). However, it should be simple to upgrade a project from `BlockRSSParser` as the public method signatures are similar.
+If you're switching from `BlockRSSParser` to `MediaRSSParser`, it should be pretty simple to do as the public method signatures are similar.
 
-## Getting Started
+## Installation with CocoaPods
 
-The easiest way to add `MediaRSSParser` to your project is using <a href="http://cocoapods.org">CocoaPods</a>.
-
-Add the following to your `Podfile` to include CocoaPods in your workspace:
+The easiest way to add `MediaRSSParser` to your project is using <a href="http://cocoapods.org">CocoaPods</a>. Add the following to your `Podfile` to include CocoaPods in your workspace:
 
 `pod 'MediaRSSParser', '~> 1.0'`
 
-Then, simply run `pod install` as you normally do.
+Then simply run `pod install` as you normally do.
 
-If you don't want to use CocoaPods, you can alternatively include `MediaRSSParser` manually in your project by doing the following:
+## Manual Installation
 
-1. Clone this repo locally onto your computer or press `Download ZIP` to simply download the latest `master` commit.
+Alternatively, you can manually include `MediaRSSParser` in your project by doing the following:
 
-2. Drag the `MediaRSSParser` folder into your app project, making sure `Copy items into destination group's folder (if needed)` is checked.
+1) Clone this repo locally onto your computer or press `Download ZIP` to simply download the latest `master` commit.
+
+2) Drag the `MediaRSSParser` folder into your app project, making sure `Copy items into destination group's folder (if needed)` is checked.
 	
-3. Add <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a> to your project (either manually or via CocoaPods).
+3) Add <a href="https://github.com/AFNetworking/AFNetworking/">AFNetworking</a> to your project (it's a dependency of this library).
 
-4. Add `#import "MediaRSSParser.h"` wherever you need to do RSS parsing, or `#import "MediaRSSModels.h"` wherever you just need to use the models.
+## How to Use
 
-5. See the class methods in `RSSParser.h` or the unit tests in `RSSParserTests.m` for how to use the RSS parser and models (full tutorial coming soon).
+`MediaRSSParser` is designed to make working with Media RSS feeds quick and easy.
 
-# Versioning and Git History
+1) Add `#import "MediaRSSParser.h"` wherever you need to do RSS parsing, or `#import "MediaRSSModels.h"` wherever you just need to use the models.
 
-`MediaRSSParser` is based on `BlockRSSParser` and diverges around version `2.1`. Thereby, the first version of `MediaRSSParser` is actually a divergent `3.0` version of `BlockRSSParser`. For this reason, the `git` history of `BlockRSSParser` is included in the `MediaRSSParser` repository.
+2) Use the `RSSParser` class for parsing RSS feeds from a URL string. 
 
-In an effort to avoid confusion, `MediaRSSParser` starts its versioning over at `1.0` (as it's now a completely separate project from `BlockRSSParser`).
+In example:
+
+    RSSParser *parser = [[RSSParser alloc] init];
+    self.parser = parser;
+  
+    __weak typeof(self) weakSelf = self;
+
+    NSString *feedURLString = @"...";
+    NSDictionary *parameters = @{@"...": @"..."};
+  
+    [self.parser parseRSSFeed:feedURLString
+                    parameters:parameters
+                       success:^(RSSChannel *channel) {
+                            weakSelf.feedItems = channel.items;
+                            [weakSelf.tableView reloadData];
+                        } 
+                        failure:^(NSError *error) {
+                            NSLog(@"An error occurred: %@", error);
+                        }];
+
+3) The models you'll use most often are `RSSChannel`, which represents an RSS `channel` element, and `RSSItem`, which represents an RSS `item` element. 
+
+See the header files for `RSSChannel` or `RSSItem` for documentation on these models.
+
+(You can also clone this repo and check out the project's unit tests for examples for use examples.)
 
 ## The RSS Protocol
 
@@ -60,9 +84,37 @@ This project aims to mitigate these issues by doing the following:
 
 2) Allowing for the addition of other RSS namespace elements, as long as they are (i) commonly used (per popular request, if you will, by other developers using this project), and (ii) have an online webpage describing the namespace specification.
 
-If you're doing something very special for your project and need to create your own RSS namespace addition, this isn't likely to make it into the main repo.
+*Note:* if you're doing something very special for your project and need to create your own RSS namespace addition, this isn't likely to make it into the main repo.
 
-Instead, you would be better off forking this repo, making your changes solely in your own branch, and periodically `pulling` changes from the main repo.
+Instead, you would be better off forking this repo, making your changes in your own branch, and periodically `pulling` changes from the main repo.
+
+## Project Objectives
+
+`MediaRSSParser` has specific goals in mind:
+
+### Main Objective
+1) To make it as easy as possible to work with RSS feeds and for third-party developers to use this repository.
+
+This means, making it easy for third-party developers to quickly answer questions like these:
+
+- "Where can I find specifications for the current version of RSS and/or Media RSS?" 
+
+ -- See the main files (`MediaRSSParser.h` or `MediaRSSModels.h`), which have links to the documentation, but here they are just in case too: <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0</a> and <a href="http://www.rssboard.org/media-rss">Media RSS 1.5.1</a>.
+
+- "What is this property on this model for?" 
+
+ -- See the header file of the model in question, which includes in-line documentation for each property.
+
+- "How does the parser work, and how do I know it will continue to work in future versions?" 
+
+ -- See the extensive reads-like-sentences unit tests for both use examples and in-code documentation on how things are suppose to work.
+
+## #Secondary Objectives
+1) Document everything (100% documentation for all header files). 
+This goes right along with "making it as easy as possible to use".
+
+2) Unit test everything (100% unit testing of all code lines). 
+This helps ensure the code works and will continue to work in the future.
 
 ## MediaRSSParser vs BlockRSSParser
 
@@ -76,22 +128,11 @@ The main difference is `MediaRSSParser` supports Media RSS (see http://www.rssbo
 
 The main reasons `MediaRSSParser` uses native objects instead of dictionaries are: (i) it's usually easier for developers to work with native objects instead of object/key dictionary pairs, and (ii) it provides a clear path for supporting additional complex elements as needed in the future- simply by adding appropriate model objects that represent them.
 
-`MediaRSSParser` has specific goals in mind:
+## Git History of this Repository
 
-1) Make it as easy for third-party developers to use it. This means, making it as easy as possible for third-party developers to quickly answer questions like these:
+`MediaRSSParser` is based on `BlockRSSParser` and diverges around version `2.1`. Thereby, the first version of `MediaRSSParser` is actually a divergent `3.0` version of `BlockRSSParser`. For this reason, the git history of `BlockRSSParser` is also included in the `MediaRSSParser` repository.
 
-- "What is this property for?" 
-(See the header files of the models, which are clearly commented including notes from the documentation)
-
-- "Where can I find specifications for the current version of RSS and/or Media RSS?" 
-(See the main header files `MediaRSSParser.h` or `MediaRSSModels.h` or many of the model headers too... but here they are just in case too: <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0</a> and <a href="http://www.rssboard.org/media-rss">Media RSS 1.5.1</a>)
-
-- "How does the parser work and/or how do I know it will continue to work in future versions?" 
-(See the extensive reads-like-sentences unit tests for both use examples and in-code documentation on how things are suppose to work.)
-
-2) Document everything - this goes right along with making it easy for other developers to use it and keeping the project maintainable in the future.
-
-3) Unit test everything - again, this makes it easier for other developers to use (as it provides use examples) and helps with maintability... plus, you know, it doesn't feel right if those tests aren't there, right? ;]
+In an effort to avoid confusion, however, `MediaRSSParser` starts its own versioning over at `1.0` (as it's now a completely separate project from `BlockRSSParser`).
 
 ## Contributing
 
@@ -103,13 +144,19 @@ To contribute:
 
 2) Make your changes.
 
-3) Write unit tests for your changes (as needed). If possible, a TDD approach is best!
+3) Write unit tests for your changes (as needed).
 
-If you've never written unit tests before, that's okay! You can learn by checking out Jon Reid's (<a href="https://twitter.com/qcoding">@qcoding</a>) excellent <a href="http://qualitycoding.org">website<a>, including a <a href="http://qualitycoding.org/unit-testing/">section just about unit testing</a>.
+If you've never written unit tests before, that's okay! 
 
-4) Write documentation comments for your changes (as needed). If you're proposing new tags be added, you *must* include a link to the namespace documentation.
+You can learn by checking out Jon Reid's (<a href="https://twitter.com/qcoding">@qcoding</a>) excellent <a href="http://qualitycoding.org">website</a>, including a <a href="http://qualitycoding.org/unit-testing/">section just about unit testing</a>.
 
-This project is part of the CocoaPods specs repo, which includes appledoc-parsed documentation hosted for each pod on <a href="http://cocoadocs.org">CocoaDocs</a>. If you're not familar with appledoc, check out Mattt Thompson's (<a href="https://twitter.com/mattt">@matt</a>) introductory <a href="http://nshipster.com/documentation/">post about it</a>.
+4) Write documentation comments for your property and/or public method additions. 
+
+If you're proposing new tags be added (e.g. support for another namespace), you *must* include a link to the online documentation.
+
+This project is part of the CocoaPods specs repo, which includes appledoc-parsed documentation hosted for each pod on <a href="http://cocoadocs.org">CocoaDocs</a>. 
+
+If you're not familar with appledoc, check out Mattt Thompson's (<a href="https://twitter.com/mattt">@matt</a>) introductory <a href="http://nshipster.com/documentation/">post about it</a>.
 
 5) Submit a pull request. 
 
