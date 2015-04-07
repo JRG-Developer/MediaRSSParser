@@ -49,7 +49,6 @@
 /**
  *  This is a convenience method for creating a new `RSSParser` object and calling the `parseRSSFeed:parameters:success:failure:` instance method on it.
  */
-
 + (RSSParser *)parseRSSFeed:(NSString *)urlString
                  parameters:(NSDictionary *)parameters
                     success:(void (^)(RSSChannel *channel))success

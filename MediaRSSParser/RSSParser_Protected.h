@@ -35,9 +35,9 @@
  *  `RSSParser_Protected` contains internal properties used by `RSSParser` that should not be used by other
  *  controllers or classes. These properties are only exposed for unit testing purposes (see `RSSParserTests.m`)
  */
-
 @interface RSSParser ()
 
+#pragma mark - Parse Setup and Completion Properties
 ///---------------------
 /// @name Parse Setup and Completion Properties
 ///---------------------
@@ -63,6 +63,7 @@
  */
 @property (nonatomic, copy) void (^failblock)(NSError *error);
 
+#pragma mark - Construction Properties Used In NSXMLParserDelegate Methods
 ///---------------------
 /// @name Construction Properties Used In NSXMLParserDelegate Methods
 ///---------------------
@@ -70,7 +71,6 @@
 /**
  *  The `RSSChannel` object that is being parsed. Per RSS 2.0 specification (see http://cyber.law.harvard.edu/rss/rss.html), an RSS feed should contain a single `channel` element only.
  */
-
 @property (nonatomic, strong) RSSChannel *channel;
 
 /**
