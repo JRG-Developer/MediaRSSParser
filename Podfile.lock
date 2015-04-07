@@ -1,37 +1,39 @@
 PODS:
-  - AFNetworking (2.2.4):
-    - AFNetworking/NSURLConnection
-    - AFNetworking/NSURLSession
+  - AFNetworking (2.5.2):
+    - AFNetworking/NSURLConnection (= 2.5.2)
+    - AFNetworking/NSURLSession (= 2.5.2)
+    - AFNetworking/Reachability (= 2.5.2)
+    - AFNetworking/Security (= 2.5.2)
+    - AFNetworking/Serialization (= 2.5.2)
+    - AFNetworking/UIKit (= 2.5.2)
+  - AFNetworking/NSURLConnection (2.5.2):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-    - AFNetworking/UIKit
-  - AFNetworking/NSURLConnection (2.2.4):
+  - AFNetworking/NSURLSession (2.5.2):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.2.4):
-    - AFNetworking/NSURLConnection
-  - AFNetworking/Reachability (2.2.4)
-  - AFNetworking/Security (2.2.4)
-  - AFNetworking/Serialization (2.2.4)
-  - AFNetworking/UIKit (2.2.4):
+  - AFNetworking/Reachability (2.5.2)
+  - AFNetworking/Security (2.5.2)
+  - AFNetworking/Serialization (2.5.2)
+  - AFNetworking/UIKit (2.5.2):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - AOTestCase (1.0.3)
-  - OCHamcrest (3.0.1)
-  - OCMockito (1.2.0):
-    - OCHamcrest (~> 3.0)
+  - OCHamcrest (4.1.1)
+  - OCMockito (1.4.0):
+    - OCHamcrest (~> 4.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
   - AOTestCase (~> 1.0)
-  - OCMockito (~> 1.2.0)
+  - OCMockito (~> 1.4)
 
 SPEC CHECKSUMS:
-  AFNetworking: ab63e259fe91eef4519b371ef0a4955af0e73e64
-  AOTestCase: 336f8b504960f8d3723e3ed9eecb4aafc2f7c00a
-  OCHamcrest: 207233b7d7a44dadd66aca398947cc7e029c9be5
-  OCMockito: e4b9564b2b9165a143fd54a41dbfb55595699624
+  AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
+  AOTestCase: 8325e06da1193b74a8a21d97627f759c6b877347
+  OCHamcrest: 6f03ffa81d12feab872638490a44ab0a6d3aca10
+  OCMockito: 4981140c9a9ec06c31af40f636e3c0f25f27e6b2
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.36.3

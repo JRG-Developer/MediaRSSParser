@@ -210,7 +210,7 @@ const char RSSParserFailBlockKey;
   RSSParser *parser = [RSSParser parseRSSFeed:@"" parameters:nil success:nil failure:nil];
   
   // then
-  assertThatBool([parser calledParseRSSFeed], equalToBool(YES));
+  assertThatBool([parser calledParseRSSFeed], isTrue());
   
   // clean up
   [self swapInstanceMethodsForClass:[RSSParser class] selector:selector andSelector:testSelector];
@@ -229,7 +229,7 @@ const char RSSParserFailBlockKey;
   [sut parseRSSFeed:@"" parameters:nil success:nil failure:nil];
   
   // then
-  assertThatBool([sut calledCancel], equalToBool(YES));
+  assertThatBool([sut calledCancel], isTrue());
   
   // clean up
   [sut cancel];
@@ -302,7 +302,7 @@ const char RSSParserFailBlockKey;
   [self whenGETSucceeded];
   
   // then
-  [verify(sut.xmlParser) setDelegate:sut];
+  [verify(sut.xmlParser) setDelegate:(id)sut];
 }
 
 - (void)test___parseRSSFeed_parameters_success_failure___success_starts_parse
@@ -342,7 +342,7 @@ const char RSSParserFailBlockKey;
   
   // then
   NSNumber *number = objc_getAssociatedObject(sut, &RSSParserFailBlockKey);
-  assertThatBool([number boolValue], equalToBool(YES));
+  assertThatBool([number boolValue], isTrue());
 }
 
 - (void)test___parser_parseErrorOccurred__does_not_crash_if_nil_fail_bloc
@@ -562,7 +562,7 @@ const char RSSParserFailBlockKey;
   assertThatInt(mediaContent.fileSize, equalToInt(0));
   assertThat(mediaContent.type, nilValue());
   assertThat(mediaContent.medium, nilValue());
-  assertThatBool(mediaContent.isDefault, equalToBool(NO));
+  assertThatBool(mediaContent.isDefault, isFalse());
   assertThat(mediaContent.expression, nilValue());
   assertThatInt(mediaContent.bitrate, equalToInt(0));
   assertThatInt(mediaContent.framerate, equalToInt(0));
@@ -583,7 +583,7 @@ const char RSSParserFailBlockKey;
   assertThatInt(mediaContent.fileSize, equalToInt(12216320));
   assertThat(mediaContent.type, equalTo(@"video/quicktime"));
   assertThat(mediaContent.medium, equalTo(@"video"));
-  assertThatBool(mediaContent.isDefault, equalToBool(YES));
+  assertThatBool(mediaContent.isDefault, isTrue());
   assertThat(mediaContent.expression, equalTo(@"full"));
   assertThatInt(mediaContent.bitrate, equalToInt(128));
   assertThatInt(mediaContent.framerate, equalToInt(25));
@@ -672,7 +672,7 @@ const char RSSParserFailBlockKey;
   assertThatInt(mediaContent1.fileSize, equalToInt(0));
   assertThat(mediaContent1.type, nilValue());
   assertThat(mediaContent1.medium, nilValue());
-  assertThatBool(mediaContent1.isDefault, equalToBool(NO));
+  assertThatBool(mediaContent1.isDefault, isFalse());
   assertThat(mediaContent1.expression, nilValue());
   assertThatInt(mediaContent1.bitrate, equalToInt(0));
   assertThatInt(mediaContent1.framerate, equalToInt(0));

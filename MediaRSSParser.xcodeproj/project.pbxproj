@@ -87,10 +87,12 @@
 		44F4D705192ACCFB00B1C78A /* RSSParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSParser.m; sourceTree = "<group>"; };
 		44F4D70F192ACD8600B1C78A /* MediaRSSParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaRSSParser.h; sourceTree = "<group>"; };
 		44F4D710192AD1E600B1C78A /* RSSParser_Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSParser_Protected.h; sourceTree = "<group>"; };
-		4E946093F2214B3DB6111D31 /* Pods-MediaRSSParserTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MediaRSSParserTests.xcconfig"; path = "Pods/Pods-MediaRSSParserTests.xcconfig"; sourceTree = "<group>"; };
-		616599D28F5F48E499D3F754 /* Pods-MediaRSSParser.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MediaRSSParser.xcconfig"; path = "Pods/Pods-MediaRSSParser.xcconfig"; sourceTree = "<group>"; };
+		4B4D21C34B8FB283E21B3416 /* Pods-MediaRSSParserTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MediaRSSParserTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MediaRSSParserTests/Pods-MediaRSSParserTests.debug.xcconfig"; sourceTree = "<group>"; };
 		891DE1AC37714A98A22A3026 /* libPods-MediaRSSParser.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MediaRSSParser.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9430DA407CEB4C96B2885102 /* libPods-MediaRSSParserTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MediaRSSParserTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F79D6CA9E13075686E9B74F /* Pods-MediaRSSParser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MediaRSSParser.release.xcconfig"; path = "Pods/Target Support Files/Pods-MediaRSSParser/Pods-MediaRSSParser.release.xcconfig"; sourceTree = "<group>"; };
+		BD7FCF846655AF94C7B9A1A8 /* Pods-MediaRSSParser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MediaRSSParser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MediaRSSParser/Pods-MediaRSSParser.debug.xcconfig"; sourceTree = "<group>"; };
+		DA17CFC112F11A6E47EFA50F /* Pods-MediaRSSParserTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MediaRSSParserTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MediaRSSParserTests/Pods-MediaRSSParserTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,8 +162,7 @@
 				44F4D6E7192ACC8900B1C78A /* MediaRSSParserTests */,
 				44F4D6D0192ACC8900B1C78A /* Frameworks */,
 				44F4D6CF192ACC8900B1C78A /* Products */,
-				616599D28F5F48E499D3F754 /* Pods-MediaRSSParser.xcconfig */,
-				4E946093F2214B3DB6111D31 /* Pods-MediaRSSParserTests.xcconfig */,
+				522CB79286CFA2E38B6CC198 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -266,6 +267,17 @@
 			name = Parser;
 			sourceTree = "<group>";
 		};
+		522CB79286CFA2E38B6CC198 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BD7FCF846655AF94C7B9A1A8 /* Pods-MediaRSSParser.debug.xcconfig */,
+				9F79D6CA9E13075686E9B74F /* Pods-MediaRSSParser.release.xcconfig */,
+				4B4D21C34B8FB283E21B3416 /* Pods-MediaRSSParserTests.debug.xcconfig */,
+				DA17CFC112F11A6E47EFA50F /* Pods-MediaRSSParserTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -361,7 +373,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-MediaRSSParser-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MediaRSSParser/Pods-MediaRSSParser-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		1B34932DDC8349D6AB5541B0 /* Check Pods Manifest.lock */ = {
@@ -406,7 +418,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-MediaRSSParserTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MediaRSSParserTests/Pods-MediaRSSParserTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -529,12 +541,11 @@
 		};
 		44F4D6F2192ACC8900B1C78A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 616599D28F5F48E499D3F754 /* Pods-MediaRSSParser.xcconfig */;
+			baseConfigurationReference = BD7FCF846655AF94C7B9A1A8 /* Pods-MediaRSSParser.debug.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/MediaRSSParser.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MediaRSSParser/MediaRSSParser-Prefix.pch";
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -542,12 +553,11 @@
 		};
 		44F4D6F3192ACC8900B1C78A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 616599D28F5F48E499D3F754 /* Pods-MediaRSSParser.xcconfig */;
+			baseConfigurationReference = 9F79D6CA9E13075686E9B74F /* Pods-MediaRSSParser.release.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/MediaRSSParser.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MediaRSSParser/MediaRSSParser-Prefix.pch";
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -555,7 +565,7 @@
 		};
 		44F4D6F5192ACC8900B1C78A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E946093F2214B3DB6111D31 /* Pods-MediaRSSParserTests.xcconfig */;
+			baseConfigurationReference = 4B4D21C34B8FB283E21B3416 /* Pods-MediaRSSParserTests.debug.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -576,7 +586,7 @@
 		};
 		44F4D6F6192ACC8900B1C78A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E946093F2214B3DB6111D31 /* Pods-MediaRSSParserTests.xcconfig */;
+			baseConfigurationReference = DA17CFC112F11A6E47EFA50F /* Pods-MediaRSSParserTests.release.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
