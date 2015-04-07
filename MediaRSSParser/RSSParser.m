@@ -29,10 +29,6 @@
 #import "AFURLResponseSerialization.h"
 #import "AFHTTPSessionManager.h"
 
-@interface RSSParser()
-@property (nonatomic, strong, readwrite) NSDateFormatter *dateFormatter;
-@end
-
 @implementation RSSParser
 
 #pragma mark - Object Lifecycle
@@ -60,8 +56,9 @@
 
 - (void)setUpDateFormatter
 {
-  self.dateFormatter = [[NSDateFormatter alloc] init];
-  [self.dateFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss Z"];
+  _dateFormatter = [[NSDateFormatter alloc] init];
+  _dateFormatter.locale = [NSLocale currentLocale];
+  _dateFormatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z";
 }
 
 #pragma mark - Cancel
